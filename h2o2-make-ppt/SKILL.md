@@ -1,11 +1,12 @@
 ---
-name: make-ppt
-description: Create PowerPoint presentation slides and speaker notes from a downloaded arXiv paper. Use when the user wants to make a PPT for an arXiv paper that has already been processed by the arxiv-paper skill (i.e., summary.md and TeX source exist under papers/). Input is a paper name or arXiv ID.
+name: h2o2-make-ppt
+author: 28H2O2
+description: Create PowerPoint presentation slides and speaker notes from a downloaded arXiv paper. Use when the user wants to make a PPT for an arXiv paper that has already been processed by the h2o2-arxiv-paper skill (i.e., summary.md and TeX source exist under papers/). Input is a paper name or arXiv ID.
 ---
 
 ## 前提
 
-在你的**论文项目根目录**下使用，该目录需已通过 arxiv-paper skill 下载并生成了 `papers/paper_{ID}/summary.md`。skill 会自动创建：
+在你的**论文项目根目录**下使用，该目录需已通过 h2o2-arxiv-paper skill 下载并生成了 `papers/paper_{ID}/summary.md`。skill 会自动创建：
 - `ppts/{PaperName}/image_png/` — 转换后的 PNG 图片
 - `ppts/{PaperName}/make_ppt.js` — 生成脚本
 - `ppts/{PaperName}/{PaperName}.pptx` — 最终 PPT
@@ -33,7 +34,7 @@ description: Create PowerPoint presentation slides and speaker notes from a down
 ls papers/
 ```
 
-若 summary.md 不存在，告知用户需要先运行 arxiv-paper skill 生成摘要，然后停止。
+若 summary.md 不存在，告知用户需要先运行 h2o2-arxiv-paper skill 生成摘要，然后停止。
 
 ### 1.2 确认图片目录与 TeX 源码
 

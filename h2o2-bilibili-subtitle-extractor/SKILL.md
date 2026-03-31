@@ -1,5 +1,6 @@
 ---
-name: bilibili-subtitle-extractor
+name: h2o2-bilibili-subtitle-extractor
+author: 28H2O2
 description: Extract Bilibili video subtitle tracks through a logged-in browser page, save AI subtitle JSON locally, and convert subtitle JSON into readable text corpora. Use when the user wants B站视频字幕、口播语料、视频内文案，尤其是要从公开视频页拿 subtitle_url 并批量落地字幕文件时。
 ---
 

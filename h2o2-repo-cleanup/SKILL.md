@@ -1,5 +1,6 @@
 ---
-name: repo-cleanup
+name: h2o2-repo-cleanup
+author: 28H2O2
 description: >
   Audit and clean up a local directory full of code repositories — especially
   useful for researchers who clone many repos to read/experiment with and then

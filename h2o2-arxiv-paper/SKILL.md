@@ -1,5 +1,6 @@
 ---
-name: arxiv-paper
+name: h2o2-arxiv-paper
+author: 28H2O2
 description: Download, extract, and summarize arXiv papers from TeX source. Use when the user wants to fetch an arXiv paper by title or ID, download its TeX source, and generate a structured Chinese summary covering background, contributions, experiments, baselines, and key results.
 ---
 
