@@ -18,6 +18,7 @@ bash install.sh --force  # 覆盖已有版本
 | [bilibili-subtitle-extractor](./bilibili-subtitle-extractor/) | 从 B 站视频页提取 AI 字幕轨，转存 JSON 并生成纯文本语料 |
 | [arxiv-paper](./arxiv-paper/) | 搜索/下载 arXiv 论文 TeX 源码，生成结构化中文摘要（实验、基线、关键数字） |
 | [make-ppt](./make-ppt/) | 基于已下载的 arXiv 论文生成 3 张 PPT + 讲稿，含溢出检测 |
+| [repo-cleanup](./repo-cleanup/) | 扫描本地代码目录，识别可回收空间（巨型 .git、冗余 zip、模型权重文件），生成可执行的清理脚本。macOS only |
 
 ## Quick Start
 
