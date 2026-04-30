@@ -78,6 +78,22 @@ skill 会扫描目录、生成分层报告（自有仓库 / 克隆仓库 / 非 g
 
 skill 会通过 `youtube-transcript-api` 查询可用字幕轨（人工/ASR、多语言），下载并保存为纯文本或带时间戳格式。
 
+---
+
+### h2o2-ai-process-auditor
+
+告诉 Claude：
+
+> 帮我看看现在有哪些 AI 工具或开发服务器的进程还在跑
+
+skill 会扫描当前系统进程，识别 Claude Code、Codex、Cursor、MCP 服务器、Playwright、Node/Python 开发服务器等可能的残留进程，按风险分级展示（建议确认 / 可疑但低负载 / 不要动），默认只读不操作。
+
+需要清理时，告诉 Claude：
+
+> 帮我把这些残留的 playwright-mcp 进程清掉
+
+skill 会列出具体 PID、等你确认后逐个终止，并重新扫描确认结果。
+
 ## 目录结构
 
 ```
