@@ -2,157 +2,137 @@
 name: h2o2-repo-cleanup
 author: 28H2O2
 description: >
-  Audit and clean up a local directory full of code repositories — especially
-  useful for researchers who clone many repos to read/experiment with and then
-  need to reclaim disk space. Use this skill whenever the user says things like
-  "my repos are taking up too much space", "help me clean up my code folder",
-  "which repos can I delete", "re-clone with depth 1", or "generate a disk usage
-  report for my projects directory". Also trigger for any combination of: large
-  .git directories, redundant zip files, cloned repos with no local changes,
-  VM images or model weights sitting inside repo folders.
+  审查并清理本地堆满代码仓库的目录——尤其适合克隆了大量仓库用于阅读或实验、
+  之后需要回收磁盘空间的研究者。当用户说"仓库占了太多空间"、"帮我清理代码目录"、
+  "哪些仓库可以删"、"用 depth 1 重新克隆"或"生成项目目录的磁盘用量报告"时触发。
+  也适用于：.git 目录过大、冗余 zip 文件、无本地修改的克隆仓库、
+  仓库目录里存放了 VM 镜像或模型权重文件等情况。
 platform: macOS
 ---
 
-# Repo Cleanup Skill
+# 仓库清理 Skill
 
-You are helping a developer reclaim disk space from a directory containing a mix
-of their own repos and third-party repos they cloned for reference.
+你正在帮助开发者从一个混合了自有仓库和参考用第三方克隆仓库的目录中回收磁盘空间。
 
-The workflow has four phases. Work through them in order, but stay flexible —
-if the user has already done some steps (e.g. they just want a fresh report),
-jump to where they are.
+工作流分四个阶段，按顺序执行，但保持灵活——如果用户已完成某些步骤（例如只想要最新报告），直接跳到对应阶段。
 
 ---
 
-## Phase 1: Scan
+## 第一阶段：扫描
 
-Run the scan script to collect raw data about every item in the target directory:
+运行扫描脚本，收集目标目录中每个条目的原始数据：
 
 ```bash
 python3 "$CLAUDE_SKILL_DIR/scripts/scan_repos.py" <target-directory>
 ```
 
-The script outputs JSON. Parse it to understand the full picture before saying
-anything to the user. At minimum, note:
-- Total directory size
-- The top 5–10 items by size (these almost always explain 80%+ of usage)
-- Any items in the "quick wins" category (redundant zips, regenerable dirs)
+脚本输出 JSON。在向用户说任何话之前，先解析完整数据，至少注意：
+- 目录总大小
+- 按大小排名前 5–10 的条目（这些通常解释了 80% 以上的空间占用）
+- "快速收益"类条目（冗余 zip、可重新生成的目录）
 
 ---
 
-## Phase 2: Report
+## 第二阶段：报告
 
-Present a ranked size table, grouped into three sections:
+呈现按大小排序的表格，分三个部分：
 
-**Section A — Your own repos** (has local commits not pushed, or no remote)
-**Section B — Cloned repos** (has a remote; may or may not have local changes)
-**Section C — Non-git items** (data, results, zips, weights, etc.)
+**A 区 — 自有仓库**（有未推送的本地提交，或没有远端）
+**B 区 — 克隆仓库**（有远端；可能有或没有本地修改）
+**C 区 — 非 git 条目**（数据、结果、zip、模型权重等）
 
-For each cloned repo, show:
-- Total size / `.git` size / ratio
-- Whether it has local changes (`git status`)
-- Remote URL (for re-cloning)
-- Last-modified date of the directory
+对每个克隆仓库，显示：
+- 总大小 / `.git` 大小 / 占比
+- 是否有本地修改（`git status`）
+- 远端 URL（用于重新克隆）
+- 目录最后修改时间
 
-Call out the "unusual suspects" explicitly:
-- `.git` taking >50% of total size → strong re-clone candidate
-- Zip file whose name matches an existing directory → pure redundancy
-- Directories named `vmware_vm_data`, `__pycache__`, `node_modules`,
-  `.venv`, `env`, `checkpoints`, `weights`, `*.pth`, `*.bin`, `*.ckpt`
-  → almost always safe to delete or regenerate
+明确指出"可疑对象"：
+- `.git` 超过总大小 50% → 强烈建议重新克隆
+- zip 文件名与已存在目录同名 → 纯冗余
+- 名为 `vmware_vm_data`、`__pycache__`、`node_modules`、`.venv`、`env`、`checkpoints`、`weights`、`*.pth`、`*.bin`、`*.ckpt` 的目录 → 几乎都可以安全删除或重新生成
 
 ---
 
-## Phase 3: Recommendations
+## 第三阶段：建议
 
-Produce a prioritized action list in three tiers:
+按优先级分三档输出行动清单：
 
-**Tier 1 — Safe, immediate wins** (no local changes, clearly redundant)
-Examples: duplicate zips, VM images, `node_modules/`, `__pycache__/`
+**第一档 — 安全的即时收益**（无本地修改，明显冗余）
+示例：重复 zip、VM 镜像、`node_modules/`、`__pycache__/`
 
-**Tier 2 — Re-clone with `--depth 1`** (cloned repos, no local changes,
-large `.git`)
-Explain `--depth 1` briefly if the user hasn't heard it: it keeps only
-the latest snapshot, discarding all git history. Fine for read-only reference
-repos. Saves the full `.git` size.
+**第二档 — 用 `--depth 1` 重新克隆**（克隆仓库，无本地修改，`.git` 较大）
+如果用户不熟悉，简要解释 `--depth 1`：只保留最新快照，丢弃全部 git 历史。对于只读参考仓库完全够用，可节省整个 `.git` 的空间。
 
-**Tier 3 — Review before acting** (repos with local changes)
-For each, offer to show what the local changes actually are (`git diff`,
-`git status --short`) so the user can decide whether they matter.
+**第三档 — 操作前先确认**（有本地修改的仓库）
+对每个仓库，主动询问是否查看本地修改的具体内容（`git diff`、`git status --short`），让用户自行判断是否重要。
 
-Always state the estimated space savings clearly per item and in total.
+每个条目和总计都要明确说明预计节省的空间。
 
 ---
 
-## Phase 4: Generate Commands
+## 第四阶段：生成命令
 
-Because permanent deletion cannot be executed on behalf of the user, generate
-a ready-to-run shell script they can review and execute themselves. Structure it
-as a commented script:
+由于不能代替用户执行永久删除操作，生成一个用户可自行审阅和执行的 Shell 脚本，结构如下：
 
 ```bash
 #!/bin/bash
-# Repo Cleanup Commands
-# Generated: <date>
-# Estimated savings: X GB
+# 仓库清理命令
+# 生成时间：<date>
+# 预计节省：X GB
 #
-# Review each section before running.
-# Each block is independent — comment out anything you want to skip.
+# 执行前请逐节检查。
+# 每个块相互独立——不想执行的注释掉即可。
 
 TARGET="<path>"
 
-# ── TIER 1: Immediate wins ─────────────────────────────────────────
-# <explanation>
+# ── 第一档：即时收益 ────────────────────────────────────────────────
+# <说明>
 rm -rf "$TARGET/<item>"
 
-# ── TIER 2: Re-clone with --depth 1 ───────────────────────────────
-# Saves ~X GB. No local changes detected.
+# ── 第二档：用 --depth 1 重新克隆 ──────────────────────────────────
+# 节省约 X GB。未检测到本地修改。
 rm -rf "$TARGET/<repo>" && git clone --depth 1 <url> "$TARGET/<repo>"
 
-# ── TIER 3: Manual review needed ──────────────────────────────────
-# <repo> has N local changes — review before deciding.
-# git -C "$TARGET/<repo>" diff   # uncomment to inspect
+# ── 第三档：需要人工确认 ────────────────────────────────────────────
+# <repo> 有 N 处本地修改——请确认后再决定。
+# git -C "$TARGET/<repo>" diff   # 取消注释以查看详情
 ```
 
-Save this script to the target directory as `cleanup_commands.sh` and tell the
-user the path.
+将脚本保存到目标目录，命名为 `cleanup_commands.sh`，并告知用户路径。
 
 ---
 
-## Extended Checks (run if user wants deeper analysis)
+## 深度检查（用户需要更深入分析时运行）
 
-These take longer but surface more savings. All commands are macOS (BSD) syntax.
+耗时较长，但能挖掘更多节省空间的机会。以下命令均为 macOS（BSD）语法。
 
 ```bash
-# Large files anywhere in the tree (>50MB)
+# 目录树中任意位置的大文件（>50MB）
 find <dir> -size +50M -not -path '*/.git/*' -exec du -sh {} \; | sort -rh
 
-# Regenerable Python artifacts
+# 可重新生成的 Python 产物
 find <dir> -type d -name '__pycache__' -not -path '*/.git/*'
 find <dir> -type d -name '.venv' -not -path '*/.git/*'
 find <dir> -type d -name 'node_modules' -not -path '*/.git/*'
 
-# Model weight files
+# 模型权重文件
 find <dir> -type f \( -name '*.pth' -o -name '*.bin' -o -name '*.ckpt' \
   -o -name '*.safetensors' \) -not -path '*/.git/*' -exec du -sh {} \; | sort -rh
 
-# Stale repos (not touched in >90 days) — macOS stat + date
+# 超过 90 天未修改的仓库 — macOS stat + date
 find <dir> -maxdepth 1 -type d -not -name '.*' \
   -exec stat -f "%m %N" {} \; | \
   awk -v cutoff=$(date -v-90d +%s) '$1 < cutoff {print $2}' | sort
 ```
 
-Surface findings naturally — don't dump raw output at the user.
+自然地呈现发现结果——不要将原始命令输出直接甩给用户。
 
 ---
 
-## Notes on Safety
+## 安全注意事项
 
-- Never execute `rm` commands yourself. Always give them to the user to run.
-- Before recommending deletion of a repo with local changes, show what those
-  changes are and let the user decide.
-- For repos where the upstream URL uses SSH (`git@github.com:...`), flag this —
-  the user needs their SSH key available to re-clone.
-- A repo with no `.git` directory might still be important (it could be a
-  hand-downloaded archive or a data directory). Don't treat no-.git as
-  automatically disposable.
+- 不要自行执行 `rm` 命令，始终交给用户运行。
+- 在建议删除有本地修改的仓库之前，先展示具体修改内容，让用户自行决定。
+- 若远端 URL 使用 SSH（`git@github.com:...`），需特别提示——用户重新克隆时需要 SSH 密钥可用。
+- 没有 `.git` 目录的仓库可能仍然重要（可能是手动下载的归档或数据目录），不要将"无 .git"视为可直接丢弃的标志。

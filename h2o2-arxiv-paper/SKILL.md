@@ -1,7 +1,7 @@
 ---
 name: h2o2-arxiv-paper
 author: 28H2O2
-description: Download, extract, and summarize arXiv papers from TeX source. Use when the user wants to fetch an arXiv paper by title or ID, download its TeX source, and generate a structured Chinese summary covering background, contributions, experiments, baselines, and key results.
+description: 从 TeX 源码下载、解压并结构化摘要 arXiv 论文。当用户想通过标题或 ID 获取 arXiv 论文、下载其 TeX 源码，并生成涵盖背景、贡献、实验、基线及主要结果的中文结构化摘要时，使用此 Skill。
 ---
 
 ## 前提
@@ -14,66 +14,66 @@ description: Download, extract, and summarize arXiv papers from TeX source. Use 
 
 ---
 
-You are helping the user download, extract, and summarize arXiv papers from their TeX source.
+你正在帮助用户从 TeX 源码下载、解压并摘要 arXiv 论文。
 
-The user will provide one or more paper titles or arXiv IDs as input.
+用户将提供一篇或多篇论文的标题或 arXiv ID 作为输入。
 
-Follow these steps carefully for EACH paper provided:
+**对用户提供的每篇论文**，按以下步骤操作：
 
 ---
 
-## Step 1: Search arXiv for the paper ID
+## 第一步：在 arXiv 上搜索论文 ID
 
-Use the arXiv API to find the paper:
+使用 arXiv API 查找论文：
 ```
 curl -s "https://export.arxiv.org/api/query?search_query=ti:{TITLE_KEYWORDS}&max_results=5"
 ```
-Parse the XML response to find the arXiv ID (format: `YYMM.NNNNN`) and confirm the title matches. If multiple results are returned, pick the best match and tell the user which one you selected.
+解析 XML 响应，找到 arXiv ID（格式：`YYMM.NNNNN`），并确认标题匹配。若返回多个结果，选择最佳匹配项并告知用户选择了哪篇。
 
 ---
 
-## Step 2: Confirm before downloading
+## 第二步：下载前确认
 
-Tell the user:
-- The paper title found
-- The arXiv ID
-- The download URL: `https://arxiv.org/src/{ID}`
-- The save path: current working directory
+告知用户：
+- 找到的论文标题
+- arXiv ID
+- 下载链接：`https://arxiv.org/src/{ID}`
+- 保存路径：当前工作目录
 
-Then ask: "Please confirm to proceed with downloading."
+然后询问："请确认是否继续下载。"
 
-Wait for user confirmation before continuing.
-
----
-
-## Step 3: Download and extract
-
-Once confirmed:
-1. Download: `curl -L -o archives/paper_{ID}.tar.gz "https://arxiv.org/src/{ID}"`
-2. Create directory: `mkdir -p papers/paper_{ID}`
-3. Extract: `tar -xzf archives/paper_{ID}.tar.gz -C papers/paper_{ID}/`
-4. List the extracted files so the user can see what's inside.
+**等待用户确认后再继续。**
 
 ---
 
-## Step 4: Read the paper content
+## 第三步：下载并解压
 
-Locate the main TeX file (usually `main.tex`, or named after the paper). Also look for a `sections/` subdirectory with individual section files.
-
-Read the following in order (use `offset` and `limit` parameters to avoid token limits):
-1. The abstract and introduction (first ~300 lines of main.tex)
-2. The method/system design section
-3. The experiments section (setup, baselines, metrics, results)
-4. The conclusion
-
-If there is a `sections/` directory, read each file individually:
-- `00_abstract.tex`, `01_introduction.tex`, etc.
+确认后执行：
+1. 下载：`curl -L -o archives/paper_{ID}.tar.gz "https://arxiv.org/src/{ID}"`
+2. 创建目录：`mkdir -p papers/paper_{ID}`
+3. 解压：`tar -xzf archives/paper_{ID}.tar.gz -C papers/paper_{ID}/`
+4. 列出解压后的文件，让用户了解内容结构。
 
 ---
 
-## Step 5: Generate and save a structured summary
+## 第四步：阅读论文内容
 
-Create a file at `papers/paper_{ID}/summary.md` with the following structure:
+找到主 TeX 文件（通常为 `main.tex`，或以论文命名）。同时查找包含各节单独文件的 `sections/` 子目录。
+
+按以下顺序阅读（使用 `offset` 和 `limit` 参数避免超出 token 限制）：
+1. 摘要与引言（main.tex 前约 300 行）
+2. 方法/系统设计章节
+3. 实验章节（设置、基线、指标、结果）
+4. 结论
+
+若存在 `sections/` 目录，逐个读取每个文件：
+- `00_abstract.tex`、`01_introduction.tex` 等
+
+---
+
+## 第五步：生成并保存结构化摘要
+
+在 `papers/paper_{ID}/summary.md` 创建摘要文件，结构如下：
 
 ```markdown
 # Paper Summary: {SHORT_TITLE}
@@ -83,9 +83,9 @@ Create a file at `papers/paper_{ID}/summary.md` with the following structure:
 - **Title**: {FULL_TITLE}
 - **Authors**: {AUTHORS}
 - **Affiliations**: {AFFILIATIONS}
-- **Venue**: {CONFERENCE} (inferred from style file: icml/iclr/neurips/usenix/acl/emnlp/etc.)
+- **Venue**: {CONFERENCE}（从 style 文件推断：icml/iclr/neurips/usenix/acl/emnlp 等）
 - **Submission Date**: {YYMM from arXiv ID}
-- **\iclrfinalcopy / accepted flag**: {YES/NO — indicates camera-ready}
+- **\iclrfinalcopy / accepted flag**: {YES/NO — 表示是否为 camera-ready}
 - **Code/Project**: {URL if found}
 
 ## 研究背景与问题
@@ -127,34 +127,34 @@ Create a file at `papers/paper_{ID}/summary.md` with the following structure:
 
 ---
 
-## Step 6: If multiple papers were provided
+## 第六步：多篇论文时生成对比表
 
-After processing all papers individually, generate a comparison table at `papers_comparison.md` in the root working directory (or append to it if it already exists). Scan `papers/` to find all existing `summary.md` files to include in the comparison.
+逐一处理完所有论文后，在根目录生成 `papers_comparison.md`（若已存在则追加）。扫描 `papers/` 下所有已有的 `summary.md` 文件纳入对比。
 
-The table should compare across:
-- Basic metadata (venue, date, affiliation)
-- Research problem & threat model
-- Method type (attack / defense / evaluation)
-- Benchmark & dataset
-- Baselines
-- Metrics
-- Key results
-- Paper structure (which sections exist: ablation, case study, benchmark chapter, etc.)
+对比维度：
+- 基本元数据（venue、日期、机构）
+- 研究问题与威胁模型
+- 方法类型（攻击 / 防御 / 评估）
+- Benchmark 与数据集
+- 基线
+- 指标
+- 主要结果
+- 论文结构（存在哪些章节：消融实验、案例分析、Benchmark 章节等）
 
-Also include a "Structural Patterns" section at the end summarizing recurring patterns you observe across all papers (e.g., how baselines are selected, how metrics are justified, how human evaluation is used).
+最后附一节"结构性规律"，总结跨论文观察到的共性模式（如基线选取方式、指标论证逻辑、人工评估的使用方式）。
 
 ---
 
-## Notes for reading TeX files
+## 阅读 TeX 文件的注意事项
 
-- Style file name reveals the venue:
+- Style 文件名揭示发表 Venue：
   - `icml2026.sty` → ICML 2026
   - `iclr2026_conference.sty` → ICLR 2026
   - `neurips_2025.sty` → NeurIPS 2025
   - `usenix.sty` → USENIX Security
   - `acl_natbib.sty` → ACL/EMNLP/NAACL
-- `\iclrfinalcopy` present → paper accepted (camera-ready)
-- `.bbl` file length ≈ proxy for citation count
-- `arXiv ID YYMM` → submission month (e.g., 2602 = Feb 2026, 2509 = Sep 2025)
-- `\newcommand{\NAME}{...}` reveals the system/framework name
-- Authors listed in `\icmlauthor{}{}` or `\author{}` blocks
+- 存在 `\iclrfinalcopy` → 论文已接收（camera-ready）
+- `.bbl` 文件长度 ≈ 引用数量的代理指标
+- `arXiv ID YYMM` → 投稿月份（如 2602 = 2026年2月，2509 = 2025年9月）
+- `\newcommand{\NAME}{...}` 揭示系统/框架名称
+- 作者信息在 `\icmlauthor{}{}` 或 `\author{}` 块中
