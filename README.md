@@ -19,6 +19,7 @@ bash install.sh --force  # 覆盖已有版本
 | [h2o2-arxiv-paper](./h2o2-arxiv-paper/) | 搜索/下载 arXiv 论文 TeX 源码，生成结构化中文摘要（实验、基线、关键数字） |
 | [h2o2-make-ppt](./h2o2-make-ppt/) | 基于已下载的 arXiv 论文生成 3 张 PPT + 讲稿，含溢出检测 |
 | [h2o2-repo-cleanup](./h2o2-repo-cleanup/) | 扫描本地代码目录，识别可回收空间（巨型 .git、冗余 zip、模型权重文件），生成可执行的清理脚本。macOS only |
+| [h2o2-youtube-transcript-extractor](./h2o2-youtube-transcript-extractor/) | 通过 youtube-transcript-api 提取 YouTube 视频字幕/文字稿，支持多语言轨道选择和带时间戳输出 |
 
 ## Quick Start
 
@@ -66,6 +67,16 @@ my-research/          ← 在这里打开 Claude Code
 
 skill 会扫描目录、生成分层报告（自有仓库 / 克隆仓库 / 非 git 文件），并输出可直接执行的 `cleanup_commands.sh`。
 
+---
+
+### h2o2-youtube-transcript-extractor
+
+告诉 Claude：
+
+> 帮我提取这个 YouTube 视频的字幕：https://www.youtube.com/watch?v=xxxxxxxx
+
+skill 会通过 `youtube-transcript-api` 查询可用字幕轨（人工/ASR、多语言），下载并保存为纯文本或带时间戳格式。
+
 ## 目录结构
 
 ```
@@ -80,8 +91,10 @@ h2o2-skills/
 │   └── SKILL.md
 ├── h2o2-make-ppt/
 │   └── SKILL.md
-└── h2o2-repo-cleanup/
-    ├── SKILL.md
-    └── scripts/
-        └── scan_repos.py
+├── h2o2-repo-cleanup/
+│   ├── SKILL.md
+│   └── scripts/
+│       └── scan_repos.py
+└── h2o2-youtube-transcript-extractor/
+    └── SKILL.md
 ```
