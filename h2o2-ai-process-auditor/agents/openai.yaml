@@ -1,0 +1,3 @@
+display_name: H2O2 AI Process Auditor
+short_description: Find likely leftover AI-agent, Node, Python, MCP, Playwright, and dev-server processes.
+default_prompt: Check whether AI coding tools or dev servers left background processes running, explain risk, and suggest safe cleanup steps.

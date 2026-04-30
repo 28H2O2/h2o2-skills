@@ -20,6 +20,7 @@ bash install.sh --force  # 覆盖已有版本
 | [h2o2-make-ppt](./h2o2-make-ppt/) | 基于已下载的 arXiv 论文生成 3 张 PPT + 讲稿，含溢出检测 |
 | [h2o2-repo-cleanup](./h2o2-repo-cleanup/) | 扫描本地代码目录，识别可回收空间（巨型 .git、冗余 zip、模型权重文件），生成可执行的清理脚本。macOS only |
 | [h2o2-youtube-transcript-extractor](./h2o2-youtube-transcript-extractor/) | 通过 youtube-transcript-api 提取 YouTube 视频字幕/文字稿，支持多语言轨道选择和带时间戳输出 |
+| [h2o2-ai-process-auditor](./h2o2-ai-process-auditor/) | 巡检 Claude Code / Codex / Cursor 等 AI 编程工具可能残留的 Node、Python、MCP、Playwright、端口监听进程，默认只读并分级建议 |
 
 ## Quick Start
 
@@ -95,6 +96,10 @@ h2o2-skills/
 │   ├── SKILL.md
 │   └── scripts/
 │       └── scan_repos.py
+├── h2o2-ai-process-auditor/
+│   ├── SKILL.md
+│   └── scripts/
+│       └── ai_process_audit.py
 └── h2o2-youtube-transcript-extractor/
     └── SKILL.md
 ```
