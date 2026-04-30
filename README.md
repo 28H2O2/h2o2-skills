@@ -1,6 +1,6 @@
 # h2o2-skills
 
-我的 Claude Code 自建 skill 集合，by 28H2O2。
+我的 Claude Code 自建 skill 集合，by 28H2O2。其实就是个不断发现需求的过程，随手保存skill。
 
 ## 安装
 
