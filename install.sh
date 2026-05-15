@@ -1,7 +1,5 @@
 #!/bin/bash
-# 将所有 skill 安装（symlink）到 ~/.claude/skills/
-# 用法：bash install.sh
-# 已安装的 skill 会跳过（除非加 --force）
+# 用法：bash install.sh [--force]
 
 SKILLS_DIR="$HOME/.claude/skills"
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
@@ -10,9 +8,8 @@ FORCE=0
 
 mkdir -p "$SKILLS_DIR"
 
-for skill_dir in "$REPO_DIR"/*/; do
+for skill_dir in "$REPO_DIR/skills"/*/; do
   skill_name=$(basename "$skill_dir")
-  # 跳过非 skill 目录（没有 SKILL.md 的）
   [[ ! -f "$skill_dir/SKILL.md" ]] && continue
 
   target="$SKILLS_DIR/$skill_name"
