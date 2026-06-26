@@ -16,6 +16,7 @@
         "./skills/h2o2-arxiv-paper",
         "./skills/h2o2-bilibili-subtitle-extractor",
         "./skills/h2o2-make-ppt",
+        "./skills/h2o2-paper-submission-audit",
         "./skills/h2o2-repo-cleanup",
         "./skills/h2o2-youtube-transcript-extractor"
       ]
