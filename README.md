@@ -46,6 +46,7 @@ bash install.sh --force  # 覆盖已有版本
 | [h2o2-youtube-transcript-extractor](./skills/h2o2-youtube-transcript-extractor/) | 通过 youtube-transcript-api 提取 YouTube 视频字幕/文字稿，支持多语言轨道选择和带时间戳输出 |
 | [h2o2-ai-process-auditor](./skills/h2o2-ai-process-auditor/) | 巡检 Claude Code / Codex / Cursor 等 AI 编程工具可能残留的 Node、Python、MCP、Playwright、端口监听进程，默认只读并分级建议 |
 | [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
+| [h2o2-paper-submission-audit](./skills/h2o2-paper-submission-audit/) | 对要投安全/AI 顶会的英文 LaTeX 论文做投稿前深度审查，检查数学/数据/claim 对齐、投稿卫生等（纯只读产出报告） |
 
 ## Quick Start
 
