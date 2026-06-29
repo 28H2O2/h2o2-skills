@@ -45,6 +45,7 @@ bash install.sh --force  # 覆盖已有版本
 | [h2o2-repo-cleanup](./skills/h2o2-repo-cleanup/) | 扫描本地代码目录，识别可回收空间（巨型 .git、冗余 zip、模型权重文件），生成可执行的清理脚本。macOS only |
 | [h2o2-youtube-transcript-extractor](./skills/h2o2-youtube-transcript-extractor/) | 通过 youtube-transcript-api 提取 YouTube 视频字幕/文字稿，支持多语言轨道选择和带时间戳输出 |
 | [h2o2-ai-process-auditor](./skills/h2o2-ai-process-auditor/) | 巡检 Claude Code / Codex / Cursor 等 AI 编程工具可能残留的 Node、Python、MCP、Playwright、端口监听进程，默认只读并分级建议 |
+| [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
 
 ## Quick Start
 
