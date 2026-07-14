@@ -47,6 +47,7 @@ bash install.sh --force  # 覆盖已有版本
 | [h2o2-ai-process-auditor](./skills/h2o2-ai-process-auditor/) | 巡检 Claude Code / Codex / Cursor 等 AI 编程工具可能残留的 Node、Python、MCP、Playwright、端口监听进程，默认只读并分级建议 |
 | [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
 | [h2o2-paper-submission-audit](./skills/h2o2-paper-submission-audit/) | 对要投安全/AI 顶会的英文 LaTeX 论文做投稿前深度审查，检查数学/数据/claim 对齐、投稿卫生等（纯只读产出报告） |
+| [h2o2-mac-disk-scan](./skills/h2o2-mac-disk-scan/) | 只读扫描 Mac 磁盘大文件/大目录，结合 mo (Mole) 的 dry-run 与 du/find/stat 按可清理程度分三档报告，绝不删除文件。macOS only |
 
 ## Quick Start
 
