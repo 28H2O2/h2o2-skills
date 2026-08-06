@@ -1,112 +1,112 @@
 ---
 name: h2o2-fdu-badminton-booker
-description: Configure one-shot checks, recurring monitoring, and explicitly authorized auto-booking for Fudan University badminton courts through the user's logged-in Chrome or Edge session, with duplicate protection and optional Feishu notifications. Use when a user asks to inspect FDU badminton availability, watch specified dates or slots, receive vacancy alerts, submit one bounded reservation, change the polling interval or deadline, test notifications, or inspect booking state on booking.fudan.edu.cn. Recurring monitoring requires a host with an automation-management tool; browser operation requires the separately installed web-access skill.
+description: "通过用户已登录的 Chrome 或 Edge 会话，配置复旦大学羽毛球场单次余量检查、定时监控和经明确授权的自动预约，并提供重复预约保护和可选飞书通知。当用户要求查看复旦羽毛球场余量、监控指定日期或时段、接收空场提醒、提交一次受控预约、调整轮询间隔或截止时间、测试通知，或查看 booking.fudan.edu.cn 上的预约状态时使用。定时监控需要宿主提供自动化管理工具；浏览器操作需要另行安装 web-access skill。"
 ---
 
-# H2O2 FDU Badminton Booker
+# H2O2 复旦羽毛球场预约助手
 
-Operate the FDU booking page through the user's existing browser login. Keep every check and booking within the exact scope the user authorized.
+通过用户现有的浏览器登录态操作复旦场馆预约页面。把每次检查和预约严格限制在用户明确授权的范围内。
 
-## 1. Select a supported mode
+## 1. 选择受支持的模式
 
-Determine the host capabilities before promising background work:
+在承诺后台运行前，先确认宿主能力：
 
-- `one-shot-check`: Inspect current availability once. This works in any compatible agent that can load `web-access`.
-- `recurring-monitor`: Recheck on a schedule and notify on availability. Require an automation-management tool.
-- `auto-book`: Recheck and submit one authorized reservation when a permitted slot becomes available. Require an automation-management tool for recurring operation.
+- `one-shot-check`：只检查一次当前余量。任何能够加载 `web-access` 的兼容 Agent 均可运行。
+- `recurring-monitor`：按计划重复检查，并在出现余量时通知。必须具备自动化管理工具。
+- `auto-book`：发现获准时段有余量时，检查并提交一次授权预约。定时运行时必须具备自动化管理工具。
 
-Search the available tools for automation management. In Codex Desktop, use a heartbeat automation attached to the current task. If no automation tool exists, do not substitute a shell loop, `cron`, detached process, or claim that monitoring is active. Offer a one-shot check or explain that recurring operation needs Codex Desktop or another host with equivalent recurring-task support.
+搜索可用工具中的自动化管理能力。在 Codex Desktop 中，使用附着于当前任务的 heartbeat automation。如果没有自动化工具，不要改用 shell 循环、`cron` 或后台进程，也不要声称监控已经启动。改为提供单次检查，或说明定时运行需要 Codex Desktop 或其他具备同等定时任务能力的宿主。
 
-## 2. Verify dependencies before network access
+## 2. 在联网前检查依赖
 
-Load and follow the separately installed `web-access` skill completely. It may appear as `web-access:web-access` in a namespaced client. This skill supplies the booking policy; `web-access` supplies the browser driver.
+完整加载并遵循另行安装的 `web-access` skill。在带命名空间的客户端中，它可能显示为 `web-access:web-access`。本 skill 负责定义预约流程和安全边界；`web-access` 负责驱动浏览器。
 
-If `web-access` is missing, stop before opening the site or creating an automation. Tell the user to install it from its upstream repository:
+如果缺少 `web-access`，在打开网站或创建自动化前停止，并告诉用户从上游仓库安装：
 
 ```bash
 npx skills add eze-is/web-access
 ```
 
-For Claude Code, its plugin installation is also supported:
+Claude Code 也可以通过插件方式安装：
 
 ```bash
 claude plugin marketplace add https://github.com/eze-is/web-access
 claude plugin install web-access@web-access --scope user
 ```
 
-Do not install the dependency without user approval. Do not replace it with unauthenticated fetching or an isolated headless browser unless the user explicitly accepts losing their existing login state.
+未经用户同意，不要代为安装依赖。除非用户明确接受无法复用现有登录态，否则不要改用未登录的静态请求或隔离的无头浏览器。
 
-Require Node.js 22 or newer. Resolve the installed `web-access` directory instead of assuming a machine-specific path. Run its `scripts/check-deps.mjs` with `--browser chrome` or `--browser edge`. Follow its remote-debugging, browser-risk-notice, and temporary-tab rules.
+要求使用 Node.js 22 或更高版本。解析已安装的 `web-access` 目录，不要假设任何机器专属路径。使用 `--browser chrome` 或 `--browser edge` 运行其中的 `scripts/check-deps.mjs`，并遵守它关于远程调试、自动化风险提示和临时标签页的规则。
 
-## 3. Collect the operating contract
+## 3. 确定操作约束
 
-Before preflight, resolve:
+在预检前确定以下信息：
 
-- mode: `one-shot-check`, `recurring-monitor`, or `auto-book`;
-- browser: Chrome or Edge;
-- booking URL and venue; use `https://booking.fudan.edu.cn/reservation/fe/site/reservationInfo?id=1055` only after the user confirms it is the intended venue;
-- target date and exact permitted slot(s), including priority order;
-- polling interval and stop time for recurring modes; recommend 10 minutes unless latency matters more;
-- notification channel: native task updates, optionally plus Feishu;
-- for auto-book only: booking phone number, permission to select and click `确认预约` once, and whether an existing matching valid reservation counts as success.
+- 模式：`one-shot-check`、`recurring-monitor` 或 `auto-book`；
+- 浏览器：Chrome 或 Edge；
+- 预约页面 URL 和场馆；只有在用户确认场馆无误后，才使用默认地址 `https://booking.fudan.edu.cn/reservation/fe/site/reservationInfo?id=1055`；
+- 目标日期和允许的准确时段；有多个时段时，确定优先级；
+- 定时模式的轮询间隔和停止时间；除非用户更看重响应速度，否则建议 10 分钟；
+- 通知渠道：任务内原生通知，以及可选的飞书通知；
+- 仅 `auto-book` 需要：预约手机号、允许选择时段并点击一次 `确认预约` 的授权，以及已有符合条件的有效预约是否可视为成功。
 
-Summarize the contract once. Ask for confirmation only when auto-book authorization is not already explicit. Authorization never covers cancellation, another date or slot, or repeated submission.
+汇总一次操作约束。只有在自动预约授权仍不明确时才请求确认。预约授权不包括取消预约、预订范围外日期或时段，以及重复提交。
 
-Treat phone numbers and webhooks as secrets. Never bake either into this skill or repeat them in user-visible output.
+把手机号和 webhook 当作敏感信息。不要把它们写死在本 skill 中，也不要在面向用户的输出中复述。
 
-### Optional Feishu setup
+### 可选的飞书配置
 
-Native task notification is sufficient by default. If the user requests Feishu, use `scripts/feishu_notify.py` so the webhook stays in an owner-only local config file rather than the automation prompt.
+默认使用任务内原生通知即可。如果用户要求飞书通知，使用 `scripts/feishu_notify.py`，把 webhook 保存在仅文件所有者可读的本地配置文件中，不要把它写进自动化 prompt。
 
-1. Resolve this skill's absolute directory.
-2. Ask the user to run `python3 <SKILL_DIR>/scripts/feishu_notify.py configure` in their terminal. Do not ask them to paste the webhook into chat when avoidable.
-3. Run `python3 <SKILL_DIR>/scripts/feishu_notify.py check`.
-4. If requested, run `python3 <SKILL_DIR>/scripts/feishu_notify.py test` and require a successful Feishu response.
-5. Put only the absolute helper path and optional config-file path in the automation prompt, never the webhook URL.
+1. 解析本 skill 的绝对目录。
+2. 请用户在自己的终端运行 `python3 <SKILL_DIR>/scripts/feishu_notify.py configure`。可以避免时，不要让用户把 webhook 粘贴到对话中。
+3. 运行 `python3 <SKILL_DIR>/scripts/feishu_notify.py check`。
+4. 如果用户要求测试，运行 `python3 <SKILL_DIR>/scripts/feishu_notify.py test`，并确认飞书返回成功。
+5. 在自动化 prompt 中只填写通知脚本的绝对路径和可选配置文件路径，不要填写 webhook URL。
 
-If secure local configuration is unavailable, fall back to native notifications unless the user explicitly accepts another storage method.
+如果无法安全地保存本地配置，改用任务内原生通知；只有在用户明确接受其他存储方式时才使用替代方案。
 
-## 4. Run preflight
+## 4. 执行预检
 
-1. Create a private temporary background tab through `web-access`; never reuse or close a user tab.
-2. Load the confirmed booking URL with the selected browser's logged-in session.
-3. Confirm the expected venue and date/time grid are present.
-4. Read [references/fudan-page-patterns.md](references/fudan-page-patterns.md) and inspect the live DOM. Treat stored patterns as hints, not guarantees.
-5. Inspect `我的预约` when auto-booking or when the user asks for booking state.
-6. Close the temporary tab after preflight.
+1. 通过 `web-access` 创建私有的临时后台标签页；不要复用或关闭用户已有的标签页。
+2. 使用所选浏览器的现有登录态打开已确认的预约地址。
+3. 确认页面显示预期场馆以及日期、时段网格。
+4. 阅读 [references/fudan-page-patterns.md](references/fudan-page-patterns.md) 并检查实时 DOM。把记录的页面模式视为提示，不要视为永远成立的保证。
+5. 在自动预约或用户要求查看预约状态时检查 `我的预约`。
+6. 预检结束后关闭临时标签页。
 
-If login, CAPTCHA, risk control, or an unexpected page blocks inspection, report the precise blocker. Do not create an automation that has not passed preflight.
+如果登录失效、验证码、风控或非预期页面阻止检查，报告准确的阻塞原因。预检未通过时不要创建自动化。
 
-Do not ask the user to re-enable remote debugging merely because a sandbox cannot reach a local port. First distinguish sandbox isolation from a browser authorization failure and use the host's approved local connection path when available.
+不要仅因为沙箱无法访问本地端口，就要求用户重新启用远程调试。先区分沙箱隔离与浏览器授权失败；可用时，使用宿主已经批准的本地连接路径。
 
-## 5. Interpret and recheck availability
+## 5. 判断并复查余量
 
-Map time labels and date-column cells from the DOM on every run. Never rely on screenshot coordinates or a previously observed fixed index.
+每次运行都从 DOM 重新映射时段标签和日期列单元格。不要依赖截图坐标或之前观察到的固定索引。
 
-- Parse `(n/m)` as `n` already reserved out of capacity `m`; remaining capacity is `m - n`.
-- `可预约` with `n < m`: available.
-- `约满` or `n >= m`: unavailable.
-- `已过期` and `未开放`: unavailable regardless of counts.
+- 把 `(n/m)` 解析为总容量 `m` 中已有 `n` 个被预约；剩余容量为 `m - n`。
+- 显示 `可预约` 且 `n < m`：可预约。
+- 显示 `约满` 或 `n >= m`：不可预约。
+- 显示 `已过期` 或 `未开放`：无论数量如何都不可预约。
 
-Re-read the target cell immediately before selection because availability can change between inspection and click.
+在选择时段前立即重新读取目标单元格，因为余量可能在检查与点击之间发生变化。
 
-## 6. Submit safely in auto-book mode
+## 6. 在自动预约模式下安全提交
 
-1. Inspect `我的预约` for a valid, non-cancelled record matching the exact date and a permitted slot.
-2. If one exists, do not submit again. Count it as success only if the operating contract allows that.
-3. Return to the booking page and recheck availability.
-4. Select only the highest-priority currently available permitted slot.
-5. Verify or fill the authorized phone number.
-6. Click `确认预约` exactly once.
-7. Confirm success from an explicit success message or a matching valid record in `我的预约`; a click alone is not success.
-8. Record the actual date, slot, court when known, timestamp, and confirmation evidence.
+1. 在 `我的预约` 中检查是否已有日期准确、时段获准且未取消的有效记录。
+2. 如果已存在，不要再次提交。只有操作约束明确允许时，才把它视为成功。
+3. 返回预约页面并重新检查余量。
+4. 只选择当前仍有余量且优先级最高的获准时段。
+5. 检查或填写获准使用的手机号。
+6. 只点击一次 `确认预约`。
+7. 只有看到明确的成功提示或 `我的预约` 中出现匹配的有效记录时，才确认成功；点击按钮本身不代表成功。
+8. 记录实际日期、时段、可获知的场地、时间戳和确认依据。
 
-Never retry an uncertain submission, cancel a reservation, or book a second slot after success.
+结果不确定时不要重试；不要取消预约；成功后不要再预约第二个时段。
 
-## 7. Create and retire recurring automation
+## 7. 创建并结束定时自动化
 
-Prefer updating a matching existing automation over creating a duplicate. Read [references/automation-template.md](references/automation-template.md), replace every placeholder, remove unused branches, and put the complete operating contract into the automation prompt. Do not rely on conversational context that a later run may not have.
+优先更新匹配的现有自动化，避免重复创建。阅读 [references/automation-template.md](references/automation-template.md)，替换所有占位符并删除不适用的分支。把完整操作约束写入自动化 prompt，不要依赖后续运行可能无法获取的对话上下文。
 
-Keep healthy full-state checks quiet unless the user requested status reports. On confirmed success, notify the task and configured Feishu channel, then delete or disable the automation. On CAPTCHA, expired login, risk control, system failure, submission failure, or an uncertain result, stop submitting, notify with the required user action, and disable further booking attempts. At the deadline, delete or disable the automation and close its temporary tab.
+除非用户要求定期报告，否则在场地约满且检查正常时保持安静。确认成功后，通知当前任务和已配置的飞书渠道，然后删除或停用自动化。遇到验证码、登录过期、风控、系统错误、提交失败或结果不确定时，停止提交，通知用户需要采取的操作，并停用后续预约尝试。到达截止时间后，删除或停用自动化，并关闭它创建的临时标签页。
 
-After monitoring ends, remind the user they may disable browser remote debugging if they no longer need it.
+监控结束后，提醒用户：如果不再需要浏览器自动化，可以关闭远程调试。
