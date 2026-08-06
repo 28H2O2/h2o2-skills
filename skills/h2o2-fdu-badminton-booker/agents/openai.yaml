@@ -1,0 +1,4 @@
+interface:
+  display_name: "H2O2 FDU Badminton Booker"
+  short_description: "复旦羽毛球余量检查、定时监控、受控自动预约与安全通知"
+  default_prompt: "Use $h2o2-fdu-badminton-booker to check or monitor an authorized FDU badminton slot with my logged-in browser."

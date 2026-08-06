@@ -28,13 +28,13 @@ cat > "$OUT" <<EOF
   "name": "h2o2-skills",
   "owner": { "name": "28H2O2" },
   "metadata": {
-    "description": "h2o2-skills: 自建 Claude Code skill 集合（arXiv 论文、B 站/YouTube 字幕、PPT、仓库清理、AI 进程巡检等）",
+    "description": "h2o2-skills: 自建 Agent skill 集合（论文、字幕、PPT、场馆预约、本地巡检等）",
     "version": "0.1.0"
   },
   "plugins": [
     {
       "name": "h2o2-skills",
-      "description": "h2o2-skills 全集：内容采集、论文处理、PPT 生成、本地仓库与进程巡检",
+      "description": "h2o2-skills 全集：内容采集、论文处理、场馆预约、本地仓库与进程巡检",
       "source": "./",
       "strict": false,
       "skills": [${skills_json}

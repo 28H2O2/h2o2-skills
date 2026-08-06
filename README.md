@@ -33,7 +33,7 @@ bash install.sh          # symlink 各 skill 到 ~/.claude/skills/
 bash install.sh --force  # 覆盖已有版本
 ```
 
-任一方式安装后，重启 Claude Code 即可生效。
+任一方式安装后，重启对应的 Agent（如 Claude Code 或 Codex）即可生效。
 
 ## Skills
 
@@ -41,6 +41,7 @@ bash install.sh --force  # 覆盖已有版本
 
 | Skill | 更新时间 | 用途 |
 |-------|---------|------|
+| [h2o2-fdu-badminton-booker](./skills/h2o2-fdu-badminton-booker/) | 2026-08-06 | 通过已登录的 Chrome/Edge 检查复旦羽毛球场余量；在 Codex Desktop 中可定时监控、受控自动预约并发送通知（需另装 web-access） |
 | [h2o2-mac-disk-scan](./skills/h2o2-mac-disk-scan/) | 2026-07-13 | 只读扫描 Mac 磁盘大文件/大目录，结合 mo (Mole) 的 dry-run 与 du/find/stat 按可清理程度分三档报告，绝不删除文件。macOS only |
 | [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 2026-06-29 | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
 | [h2o2-paper-submission-audit](./skills/h2o2-paper-submission-audit/) | 2026-06-26 | 对要投安全/AI 顶会的英文 LaTeX 论文做投稿前深度审查，检查数学/数据/claim 对齐、投稿卫生等（纯只读产出报告） |
@@ -54,6 +55,20 @@ bash install.sh --force  # 覆盖已有版本
 > 更新时间取该 skill 首次纳入本仓库的日期；2026-05-15 为初次整理入库的那批，同日内按加入先后排列。
 
 ## Quick Start
+
+### h2o2-fdu-badminton-booker
+
+先安装它所需的浏览器驱动 skill：
+
+```bash
+npx skills@latest add eze-is/web-access
+```
+
+然后在支持 skills 的 Agent 中说：
+
+> 帮我检查复旦羽毛球场明天下午 18:00–20:00 有没有余量，先不要预约
+
+单次检查可在兼容 `web-access` 的 Agent 中运行；定时监控和自动预约需要 Codex Desktop 的自动化能力。首次使用还需 Node.js 22+，并在 Chrome 或 Edge 登录复旦预约系统、按提示启用远程调试。自动预约只会在用户明确授权的日期、时段和手机号范围内提交一次。
 
 ### h2o2-bilibili-subtitle-extractor
 
@@ -136,6 +151,15 @@ h2o2-skills/
 ├── .claude-plugin/
 │   └── marketplace.json                ← 让仓库成为 Claude Code plugin marketplace
 └── skills/                             ← 所有 skill 统一收在这里（下面按更新时间倒序）
+    ├── h2o2-fdu-badminton-booker/
+    │   ├── SKILL.md
+    │   ├── agents/
+    │   │   └── openai.yaml
+    │   ├── references/
+    │   │   ├── automation-template.md
+    │   │   └── fudan-page-patterns.md
+    │   └── scripts/
+    │       └── feishu_notify.py
     ├── h2o2-mac-disk-scan/
     │   └── SKILL.md
     ├── h2o2-paper-impact/
