@@ -21,6 +21,7 @@
         "./skills/h2o2-paper-impact",
         "./skills/h2o2-paper-submission-audit",
         "./skills/h2o2-repo-cleanup",
+        "./skills/h2o2-research-html",
         "./skills/h2o2-youtube-transcript-extractor"
       ]
     }

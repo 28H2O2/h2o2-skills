@@ -41,6 +41,7 @@ bash install.sh --force  # 覆盖已有版本
 
 | Skill | 更新时间 | 用途 |
 |-------|---------|------|
+| [h2o2-research-html](./skills/h2o2-research-html/) | 2026-10-08 | 将 AI 实验、Agent 对抗或评测数据生成为单文件交互式 HTML 报告：固定舞台框展示时空关系、单步点击看状态变化、暖纸浅色配色、零评论客观呈现 |
 | [h2o2-fdu-badminton-booker](./skills/h2o2-fdu-badminton-booker/) | 2026-08-06 | 通过已登录的 Chrome/Edge 检查复旦羽毛球场余量；在 Codex Desktop 中可定时监控、受控自动预约并发送通知（需另装 web-access） |
 | [h2o2-mac-disk-scan](./skills/h2o2-mac-disk-scan/) | 2026-07-13 | 只读扫描 Mac 磁盘大文件/大目录，结合 mo (Mole) 的 dry-run 与 du/find/stat 按可清理程度分三档报告，绝不删除文件。macOS only |
 | [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 2026-06-29 | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
@@ -55,6 +56,14 @@ bash install.sh --force  # 覆盖已有版本
 > 更新时间取该 skill 首次纳入本仓库的日期；2026-05-15 为初次整理入库的那批，同日内按加入先后排列。
 
 ## Quick Start
+
+### h2o2-research-html
+
+在有实验数据或评测日志的项目中（如 Agent 安全对抗、评测复现），告诉 Agent：
+
+> 帮我把这一轮的实验数据和 runs 日志生成一份可交互的 HTML 实验报告
+
+skill 会生成单文件自包含 HTML，采用暖纸浅色配色、左侧导航 + 固定空间舞台框，支持点击单步观察文件与工具状态变化，并包含客观引用与代码行为对照。
 
 ### h2o2-fdu-badminton-booker
 
