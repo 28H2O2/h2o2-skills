@@ -65,7 +65,7 @@ bash install.sh --force  # 覆盖已有版本
 
 skill 会生成可离线打开的单文件 HTML：以紧凑执行泳道和事件列表呈现运行轨迹，Scene Map 区分配置、可用、已用与未知状态；点击事件可查看原文、忠实中文翻译和工具调用证据。没有 Agent Trace 时，按数据选择图表和证据卡。
 
-目录内附设计规范、[可交互示例](./skills/h2o2-research-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。
+目录内附设计规范、[可交互示例](./skills/h2o2-research-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。当前 v1.1 增加局部斜体衬线标题、内联 SVG 手写落款与关键事件细边注，保持完全离线使用。
 
 ### h2o2-fdu-badminton-booker
 

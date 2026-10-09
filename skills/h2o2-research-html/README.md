@@ -13,3 +13,6 @@
 > 请使用 h2o2-research-html Skill，根据这些 Agent 运行日志生成单文件 HTML 报告。Trajectory 为主、Scene Map 为辅；Thinking 展示摘要与忠实双语原文；尽量少写解释性段落。
 
 示例不使用网络资源。底部 `✳ crafted by h2o2` 签名可自由移除。
+
+### v1.1 更新
+英文标题改为局部斜体衬线、页脚采用独立的内联 SVG 手写 h2o2 落款，关键事件增加细边注，且保留完全离线使用。

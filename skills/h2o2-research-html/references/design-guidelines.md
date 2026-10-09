@@ -1,4 +1,4 @@
-# H2O2 视觉与交互规范 · v1
+# H2O2 视觉与交互规范 · v1.1
 
 ## 目标
 
@@ -48,3 +48,12 @@
 - `scrollWidth <= clientWidth` 在桌面及窄屏都成立。对缺失时间字段不生成虚构的精确持续时间。
 
 示例 `../assets/example.html` 提供视觉与行为参照；真实报告应当按数据裁剪模块。
+
+
+## Typography & gentle details · v1.1
+
+- 维持正文系统无衬线，数据仍以对比度和对齐为先。
+- **英文展示标题**：仅小范围应用优雅斜体衬线，如 `Iowan Old Style / Baskerville / Palatino / Georgia Italic`；参考在线字体 [Instrument Serif](https://github.com/Instrument/instrument-serif)。
+- **页脚落款**：`a field note, crafted by` 采用极小斜体，`h2o2` 使用内联 SVG 手写轮廓，带一条近似铅笔的收尾线；不引用线上 CDN，也不附带字体文件。当前示例的字形轮廓取自开源 Lobster Two (SIL OFL 1.1)，仅四个字形的矢量轮廓用于显示，参见 [许可](https://fontsource.org/fonts/lobster-two/about)。可参考 [Caveat](https://fonts.google.com/specimen/Caveat) 进一步探索笔记手写感。
+- **边注**：只有明确的关键事件才有细琥珀边线，不为了装饰强行生成事件标签。
+- **克制原则**：每页不超过三处纯装饰；禁用遮挡文字的水印、漂浮动画或闪烁。

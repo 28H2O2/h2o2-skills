@@ -30,7 +30,7 @@ description: 为 Agent 运行轨迹、MCP/Skill 实验、AI 安全评测与科�
 - **Selectors**：Scenario / Case / Model / Run 按实际数据出现；单一取值展示为文字，不强加下拉框。切换执行维度时同步更新所有视图。
 - **Main desktop**：左侧约 60% Trajectory（小泳道 + 精简事件列表），右侧约 40% Scene Map（静态能力清单 + 已使用状态 + 当前选中高亮）。移动端改上下结构。
 - **Evidence**：所选事件的原文/忠实翻译/参数/结果；默认紧凑，长内容可展开、滚动或切换。
-- **Footer**：判定口径、数据来源、限制。允许一个非常低调的 `crafted by h2o2` 签名；不干扰数据与阅读。
+- **Footer**：判定口径、数据来源、限制。允许一个非常低调的 `crafted by h2o2` 手写感签名；不干扰数据与阅读。
 
 数据不含 Agent Trace 时，按数据选择图表、表格和证据卡，不要强制生成泳道或 Scene Map。页面结构适配内容，而不是内容迁就模板。
 
