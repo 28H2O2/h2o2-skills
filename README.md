@@ -65,7 +65,7 @@ bash install.sh --force  # 覆盖已有版本
 
 skill 会生成可离线打开的单文件 HTML：以紧凑执行泳道和事件列表呈现运行轨迹，Scene Map 区分配置、可用、已用与未知状态；点击事件可查看原文、忠实中文翻译和工具调用证据。没有 Agent Trace 时，按数据选择图表和证据卡。
 
-目录内附设计规范、[可交互示例](./skills/h2o2-research-design-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。当前 v1.2 优化信息层级、中英文混排与 Thinking 逐段双语证据，改进窄屏泳道和文件状态展示，并新增极简报告示例与截图自检规范，保持完全离线使用。
+目录内附设计规范、[可交互示例](./skills/h2o2-research-design-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。当前 v1.3 新增统一 JSON 数据示例、HTML 生成器与 Apple 本地翻译脚本：Instruction 与 Thinking 在生成阶段补齐中文，报告打开时完全离线。已在 macOS 27.0.1 / Swift 6.4 上验证真实翻译，并检查桌面及 390px／320px 手机布局。
 
 ### h2o2-fdu-badminton-booker
 
@@ -163,19 +163,24 @@ h2o2-skills/
 │   └── marketplace.json                ← 让仓库成为 Claude Code plugin marketplace
 └── skills/                             ← 所有 skill 统一收在这里（下面按更新时间倒序）
     ├── h2o2-research-design-html/
-    │   ├── SKILL.md
-    │   ├── README.md
+    │   ├── SKILL.md / README.md / LICENSE
     │   ├── references/
     │   │   ├── design-guidelines.md
-    │   │   └── typography.md
-    │   └── assets/
-    │       ├── example.html
-    │       ├── example-compact.html
-    │       ├── example.png
-    │       ├── example-mobile.png
-    │       ├── example-thinking.png
-    │       ├── example-thinking-mobile.png
-    │       └── example-compact.png
+    │   │   ├── typography.md
+    │   │   └── translation.md
+    │   ├── assets/
+    │   │   ├── report-template.html / signature.html
+    │   │   ├── example.html / example-compact.html
+    │   │   └── example-{1440,390,320}.png / example-thinking-{1440,390,320}.png
+    │   ├── examples/
+    │   │   ├── agentcanary-demo.json / translation-smoke.json
+    │   │   └── make_demo.py
+    │   ├── scripts/
+    │   │   ├── prepare_translations.py / render_report.py
+    │   │   └── apple-translate/      ← SwiftPM 本地翻译工具
+    │   └── tests/
+    │       ├── test_pipeline.py / mock_translator.py
+    │       └── check_browser.py
     ├── h2o2-fdu-badminton-booker/
     │   ├── SKILL.md
     │   ├── agents/
