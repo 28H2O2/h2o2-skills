@@ -1,18 +1,37 @@
-# H2O2 Research Design HTML Skill
+# H2O2 Research Design HTML · v1.2
 
-安装：把 `h2o2-research-design-html` 目录复制到 Agent 的 skills 目录，确保 `SKILL.md` 在目录根部。
+将本目录复制到 Agent 的 Skills 目录；加载 `SKILL.md` 即可。
 
-- `SKILL.md`：生成规则与事实边界
-- `references/design-guidelines.md`：视觉与交互规范
-- `assets/example.html`：单文件、可交互、离线的视觉参考，使用虚构演示数据
-- `assets/example.png`：桌面视觉截图
-- `assets/example-mobile.png`：移动端截图
+## Contents
 
-示例使用方式：
+- `SKILL.md` — 简明生成规范、事实边界、浏览器视觉 QA
+- `references/design-guidelines.md` — 轻量报告视觉系统与交互规则
+- `references/typography.md` — Apple 式微排版思路与视觉检查清单
+- `assets/example.html` — Trajectory + Scene Map + 逐段中英对照的可交互 HTML
+- `assets/example-compact.html` — 无 Thinking/Scene Map 的最小报告示例
+- `assets/example.png` — 桌面截图
+- `assets/example-thinking.png` — 长 Thinking 选中状态截图
+- `assets/example-mobile.png` — 手机截图
+- `assets/example-compact.png` — Compact 示例截图
 
-> 请使用 h2o2-research-design-html Skill，根据这些 Agent 运行日志生成单文件 HTML 报告。Trajectory 为主、Scene Map 为辅；Thinking 展示摘要与忠实双语原文；尽量少写解释性段落。
+## Example prompt
 
-示例不使用网络资源。底部 `✳ crafted by h2o2` 签名可自由移除。
+> 使用 h2o2-research-design-html，将这些真实 Agent 运行数据整理成**一份单文件 HTML 研究手记**：以轨迹为主、Scene Map 为辅；关键步骤只在有真实研究意义时标注；有 Thinking 则提供中文摘要和忠实双语原文；少解释、重可视化。生成后请截图自检。
 
-### v1.1 更新
-英文标题改为局部斜体衬线、页脚采用独立的内联 SVG 手写 h2o2 落款，关键事件增加细边注，且保留完全离线使用。
+## Design notes
+
+- 两份 HTML 都纯离线、无 CDN、无外部脚本、无构建步骤。
+- 示例数据全部为 **synthetic / 虚构演示**，不代表真实评测结论。
+- `crafted by h2o2` 是可删除的视觉署名，不代表报告事实来源或研究作者。
+- 不附带字体文件；主示例沿用内联 SVG 字标。
+
+## v1.2 changes
+
+1. 删除 Header 中重复的 Scenario/Case 指标卡，采用更克制的标题与一行数据概览。
+2. 提升事件与辅助信息字号，优化字体层级、数字对齐与断行。
+3. Scene Map 减少嵌套卡片边框，将焦点与已使用状态分开。
+4. Thinking 英中段落对齐，证据模式切换更易阅读。
+5. 泳道使用窄屏内部横向滚动，不压缩至不可读。
+6. 新增极简示例与 visual screenshot QA 流程。
+
+**Signature provenance:** 主示例保留 v1.1 的手写字标：源自开源字体 [Lobster Two](https://fonts.google.com/specimen/Lobster+Two) 字形轮廓（SIL Open Font License 1.1）。它以 SVG 图形内嵌，不包含字体文件。
