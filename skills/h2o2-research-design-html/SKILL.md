@@ -1,10 +1,10 @@
 ---
-name: h2o2-research-html
+name: h2o2-research-design-html
 author: 28H2O2
 description: 为 Agent 运行轨迹、MCP/Skill 实验、AI 安全评测与科研结果生成轻量、漂亮、可信的单文件交互式 HTML 报告。适用于「生成实验报告」「将 Agent Trace 可视化」「做 research HTML」「生成可交互的运行回顾」等任务。
 ---
 
-# H2O2 Research HTML
+# H2O2 Research Design HTML
 
 生成 **以图为主、少字易读、证据可追溯** 的单文件 HTML 研究报告。它是供人阅读的报告，不是实时监控台。
 
