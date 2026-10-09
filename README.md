@@ -41,7 +41,7 @@ bash install.sh --force  # 覆盖已有版本
 
 | Skill | 更新时间 | 用途 |
 |-------|---------|------|
-| [h2o2-research-html](./skills/h2o2-research-html/) | 2026-10-08 | 将 AI 实验、Agent 对抗或评测数据生成为单文件交互式 HTML 报告：固定舞台框展示时空关系、单步点击看状态变化、暖纸浅色配色、零评论客观呈现 |
+| [h2o2-research-html](./skills/h2o2-research-html/) | 2026-10-08 | 为 Agent 运行轨迹、MCP/Skill 实验与科研结果生成单文件交互式 HTML 报告：轨迹为主、场景能力为辅，证据可追溯，附离线示例与桌面／手机预览 |
 | [h2o2-fdu-badminton-booker](./skills/h2o2-fdu-badminton-booker/) | 2026-08-06 | 通过已登录的 Chrome/Edge 检查复旦羽毛球场余量；在 Codex Desktop 中可定时监控、受控自动预约并发送通知（需另装 web-access） |
 | [h2o2-mac-disk-scan](./skills/h2o2-mac-disk-scan/) | 2026-07-13 | 只读扫描 Mac 磁盘大文件/大目录，结合 mo (Mole) 的 dry-run 与 du/find/stat 按可清理程度分三档报告，绝不删除文件。macOS only |
 | [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 2026-06-29 | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
@@ -63,7 +63,9 @@ bash install.sh --force  # 覆盖已有版本
 
 > 帮我把这一轮的实验数据和 runs 日志生成一份可交互的 HTML 实验报告
 
-skill 会生成单文件自包含 HTML，采用暖纸浅色配色、左侧导航 + 固定空间舞台框，支持点击单步观察文件与工具状态变化，并包含客观引用与代码行为对照。
+skill 会生成可离线打开的单文件 HTML：以紧凑执行泳道和事件列表呈现运行轨迹，Scene Map 区分配置、可用、已用与未知状态；点击事件可查看原文、忠实中文翻译和工具调用证据。没有 Agent Trace 时，按数据选择图表和证据卡。
+
+目录内附设计规范、[可交互示例](./skills/h2o2-research-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。
 
 ### h2o2-fdu-badminton-booker
 
@@ -160,6 +162,15 @@ h2o2-skills/
 ├── .claude-plugin/
 │   └── marketplace.json                ← 让仓库成为 Claude Code plugin marketplace
 └── skills/                             ← 所有 skill 统一收在这里（下面按更新时间倒序）
+    ├── h2o2-research-html/
+    │   ├── SKILL.md
+    │   ├── README.md
+    │   ├── references/
+    │   │   └── design-guidelines.md
+    │   └── assets/
+    │       ├── example.html
+    │       ├── example.png
+    │       └── example-mobile.png
     ├── h2o2-fdu-badminton-booker/
     │   ├── SKILL.md
     │   ├── agents/
