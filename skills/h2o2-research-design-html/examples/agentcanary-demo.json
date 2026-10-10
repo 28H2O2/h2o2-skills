@@ -340,8 +340,8 @@
               {
                 "from": "exec",
                 "to": "secret",
-                "kind": "mentions_and_returns",
-                "evidence": "tool_output"
+                "kind": "reads",
+                "evidence": "tool_result"
               }
             ]
           },

@@ -1,60 +1,62 @@
 ---
 name: h2o2-research-design-html
 author: 28H2O2
-description: 将 Agent Trace、MCP/Skill 实验、模型评测或科研执行记录生成简洁漂亮的离线单文件 HTML 报告。特别适用于需要中文 Instruction、Thinking 忠实翻译、Trajectory 即时检查和 Scene Map 空间关系的 Agent 运行记录。
+description: 生成简洁、可信、离线单文件 HTML 研究报告，尤其适合 Agent Trace、工具与文件操作、模型安全评测。使用 Trajectory、即时 Inspector、Scene Map 与可选本地中英翻译。禁止空泛文案和无证据的组件关系。
 ---
 
-# H2O2 Research Design HTML · v1.3
+# H2O2 Research Design HTML · v1.4
 
-一份能直接读懂的实验报告，不是宣传文案，也不是监控控制台。**只写事实、操作和证据；优先让图与交互承担解释。**
+**让用户直接看见事实，而不是读报告生成者的旁白。** HTML 是轻量研究记录，不是控制台，不是宣传页。标题用任务本名，如「AgentCanary复现」。保留低调 `crafted by h2o2` 落款。
 
-## 参考材料（按需读）
+## 阅读顺序（Agent Trace 报告）
 
-- `references/design-guidelines.md`：核心布局、语义表达、Scene / Trajectory / Inspector 细节。
-- `references/typography.md`：字体、间距、混排、截图 QA。
-- `references/translation.md`：Mac 本地翻译、缓存、敏感信息、降级机制。
-- `assets/example.html`：完整可交互的 AgentCanary **虚构演示数据**。
-- `assets/example-compact.html`：短报告可省略 Scene、Thinking 等模块。
-- `examples/agentcanary-demo.json`：统一数据契约示例，**不得当作真实测试结果**。
-- `scripts/prepare_translations.py`、`scripts/render_report.py`：翻译准备与参考 HTML 生成器。
+1. **任务选择**：Scenario / Case / Model / Run 按数据出现。Case 候选项展示任务名称与本模型的攻击结果；有充分理由时才标「值得看」。切换 Case 尽量保留当前 Model；缺少记录时明确提示，不可悄悄换模型。隐藏精确批次时间等无关信息。
+2. **Instruction 前置**：直接显示 Agent 实际收到的完整英文原文与中文译文。Shell/代码类 Instruction 优先保持命令原样，不翻成自然语言；可另有中文操作说明，但不能覆盖原文。Judge Goal 另列，不能冒充用户输入。
+3. **Trajectory 在左**：一张紧凑的 User / Agent / Tool / File 步骤泳道，配简明事件列表。没有可靠时间戳就写「执行顺序」，不用假耗时。对应 Tool Call + Result 合成一个事件。
+4. **Inspector 在右侧首屏**：点击泳道节点或事件行立即显示原始 Thinking、对应中文、Tool 参数与返回；在面板内部滚动，桌面端无需向下找 Evidence。手机改为上下排列并滚动定位详情。
+5. **Scene Map 在 Inspector 下方**：Agent、MCP、**工具**、**技能**、**文件**分类清晰。资源集合与实际关系分层：先展示已知组件（包括确认可用而未调用的），再呈现有证据的 `A → 操作 → B`。未采集可用清单必须标「未采集」，不当成空集合。切换事件只高亮，不删其他节点。
 
-示例供参考视觉语言、内容密度和交互规则，不可照搬内容或硬性强加空模块。
+对只有几步记录或没有 Agent 轨迹的报告，自适应减少泳道与 Scene；参阅 `assets/example-compact.html`，不得硬塞不存在的模块。
 
-## 交付契约
+## 事件文案：严格去 AI 味
 
-1. **直白命名。** 用户已有标题就直接使用（如 `AgentCanary复现`）；不能生成抽象宣传语、AI 风格副标题、口号和多余的导语。展示事实优先于“讲述报告意义”。
-2. **Instruction 在上。** 每次选定 Case + Model + Run，先看到该任务当时实际接收的 User Instruction（英文原文 + 中文译文）；如另有 Evaluation Goal，使用独立字段，不可冒充 Instruction。
-3. **切换即知结果。** Case 选择展示任务名称、少量具体行为、结果（成功/失败/部分成功/未知）及可选特别关注标记；严格区分攻击是否成功、Judge 分数与执行状态。只有多个 Run 才显示 Run 选择，隐藏不必要的精确批次时分秒。
-4. **Trajectory First。** 桌面左侧是紧凑角色泳道 + 事件顺序列表；仅在有可靠时间数据时显示实际耗时，否则使用等距步骤并明确说明。Tool Call 与匹配的 Result 合并成同一个可展开事件。
-5. **即时 Inspector。** 桌面端右侧最上方固定显示选中事件详情（可局部滚动）；点击任何泳道节点或事件列表条目，立刻就地更新英文原文、对应中文、工具参数与返回。不要求滚动整页寻找 Evidence。手机端改为上下布局，选中后将详情移到可见位置。
-6. **Thinking 为记录，不是臆测。** 只显示源数据里可见的原始 Thinking 或标注来源的 reasoning summary。事件列表至多一条**具体判断**的中文导读；禁止“反复评估风险”等无实际信息的套话。完整译文不可用时必须标注“未翻译”，不能将摘要冒充译文。保留否定、条件、犹豫和关键技术标识。
-7. **Scene Map 要有空间关系。** 右侧 Inspector 下方展示 Agent → MCP/Tools、Agent → Skills、Tool/Agent → Files 的已知关系。**Agent / 工具 / 技能 / 文件**是醒目的分组标题；“已配置 / 可用 / 用过 / 当前选中 / 未知”分别表达。环境信息不足时只画确认的组件；可以注明未知，不得创造未记录的工具。选中事件时不隐藏未使用资源。
-8. **重点是可选的。** 只标记确实影响实验结论的异常、决定、文件效果和结果；没有关键步骤就不标。事件文案：`动作 + 对象 + 结果`；Thinking 文案：`具体顾虑/判断 + 决定`。
-9. **少解释，多可读。** 对所有可见界面文案进行 Editorial QA：若一句话没传递新的数据、操作、证据或必要限制，删除。原始证据和译文允许完整，但默认折叠/滚动。
-10. **单文件、离线、最小技术栈。** CSS、JS、SVG 内嵌；不依赖 CDN、外部字体、React，不在用户打开报告时请求翻译。系统斜体仅点缀标题，`crafted by h2o2` 低调落款。
+- 标题仅用于说明任务、对象或结果，禁止空泛主副标题、主题宣言、价值感慨和重复解说。
+- 工具事件写 `动作 → 对象`，下一行只写**观察到的结果**，例如 `write → SOUL.md` / `工具返回写入成功`。
+- **Thinking 摘要必须说出具体判断或决定**：如「担心覆写安全边界，但认为用户可编辑，仍决定执行」。禁止「用户希望我……」「反复评估风险」「规划下一步回应」或直接复制英文首句/用户 Instruction。若无法从原文提取可靠判断，主列表宁可不写摘要，Inspector 仍保留原文，并在 QA 提醒。不可捏造未记录的内在推理。
+- 关键步骤标记**默认不要求**；只给有证据影响结论的转折、异常或实际文件操作加极细标记。不凑数。
+- 任何可见文案必须增加数据、具体判断、操作提示或必要限制；否则删除。
 
-## 翻译规范（必须阅读 `references/translation.md`）
+## Translation：参考 `references/translation.md`
 
-- Instruction 与实际记录的英文 Thinking **优先**提供简体中文完整译文；若来源仅有 reasoning summary，则标为摘要。
-- 默认在生成 HTML 前尝试本地翻译。**macOS 26+** 可使用随附的 Swift/Apple Translation 适配器（已安装 en/zh 语言资源时）；其他环境必须明确降级，用户可自行配置本地/远程命令接口，但默认绝不向外部服务发送数据。
-- 对重复英文文本/段落按内容哈希缓存；长 Thinking 按原始段落逐段译并对应展示。保留原始文本。
-- 检测重要技术字串、路径/代码是否被翻译破坏；校验失败标记未通过，不要声称翻译完整可信。敏感内容先按上下文审查/脱敏，再考虑发送给第三方 API；禁止自动回退到在线服务。
-- 本 Skill 提供的脚本是**参考实现**；通用 Agent 也可以按这套约束生成自己的 HTML。
+- 优先提供 Instruction 和**实际采集到的** Thinking 的完整中文译文；不把摘要叫作「直译」。保留原始英文。
+- 生成阶段优先可选 Apple Translation（macOS 26+ 且已安装翻译语言包）；其他系统用 `--backend none` 或用户**主动配置**的 CLI 翻译器。不得自动调用第三方在线 API。生成的 HTML 离线运行。
+- `scripts/prepare_translations.py` 在翻译前保护代码块、反引号、Shell 命令、路径和技术标识；分批、缓存并局部重试。发现保留标识丢失、替换字符 `�` 等问题时保留原文并标注失败；技术语义仍可能出错，不能把机器译文视为人工审核通过。
+- 中文读书摘要与全文翻译分开处理；读书摘要应由生成 Agent 依据 Thinking 写出，再经 `scripts/quality_check.py` 检查低质模式。
+- 不覆盖已存在的人工译文；对**已有译文**仍进行翻译 QA，不因 `translation_status=translated_apple` 就认定可信。
 
-## 数据与语义检查
+## Scene 事实边界：参考 `references/scene-semantics.md`
 
-- 未见到的工具不等于不可用；仅根据调用日志不可推断完整环境。
-- `exec` 命令提及一个文件不等于确证写入；`read` 不等于泄露；最终回答拒绝不等于工具侧安全。文件状态要区分直接工具返回、命令文本、文件快照等证据等级。
-- Tool Call / Result 必须按 ID 关联；文件路径大小写敏感，不要混淆 `soul.md` 与 `SOUL.md`。
-- 原始内容不可信；用 `textContent` / DOM API 渲染，JSON 嵌入必须防止 `</script>` 关闭。默认遮盖明确的令牌、密钥值，不能破坏 `/etc/passwd` 等路径及普通词。
-- Judge 分数不是攻击成功率；成功与失败只有原始指标支持时才能确定。没有数据就用“未知”。
+- 区分 `declared/configured`、`available`、`observed used`、`unknown`，严禁用「工具未调用」推断「工具不可用」。
+- 区分 `mentions`（命令文本出现路径）、`reads`、`writes`、`deletes`。`rm file` 出现在命令中不是删除成功；仅当明确工具返回或快照支持时提升证据等级。
+- `memory_search` 不等于读取 `MEMORY.md`；`exec` 不代表所涉及文件全部被修改；Tool 进程结束不等于内部命令成功。
+- 连线依据真实 `environment.links[]` 逐条画出，完整关系可展开，选中时改变焦点。**不能画固定连线冒充数据关系**。文件名大小写与真实路径不得无证据合并。
 
-## 生成与验收
+## 最小实现与自检
 
-1. 核对源记录、Case、Run、Instruction、Thinking、Tool Call/Result、Scene 配置、文件证据和评估结果；建立统一 JSON 结构。请勿用示例的虚构数据补空缺。
-2. 按需运行 `python3 scripts/prepare_translations.py --input INPUT.json --output TRANSLATED.json --backend apple`。无 Mac 翻译条件则先使用 `--backend none` 生成带“未翻译”标识的可读报告。
-3. 用 `python3 scripts/render_report.py --input TRANSLATED.json --output report.html` 或参照示例输出单文件 HTML。
-4. 至少实际检查桌面 1440px 首屏、长 Thinking 选中状态和手机 390px。点泳道节点应立即看到 Inspector；确认切换任务/模型/运行时不会遗留上次状态；网页无横向溢出、JS 错误。
-5. 通过 Editorial QA（无空话）、Semantic QA（证据与翻译不冒充）、Visual QA（字号、断行、视觉重心）后交付。如果没有条件测试 Apple 翻译本机运行，**必须直说没有在 Mac 上验证**。
+- 原生 HTML + 内联 CSS / JS / SVG；不依赖 CDN、React、远程字体或运行时 API。
+- 渲染不可信源文本时使用 DOM `textContent`；JSON 以安全转义嵌入。机密字符串默认脱敏，不能把 `/etc/passwd`、`bypass` 之类的普通文本误删。
+- 数据 Schema：`scenarios[]` → `cases[]` → `runs[]` → `events[]`；每个 Run 有 `environment.resources / links`。详见示例 `examples/agentcanary-demo.json`。
+- 先执行：`python3 scripts/quality_check.py --input data.json`；修正 errors，逐条检查 warnings（警告不保证发现所有语义错误）。
+- 如缺翻译：`python3 scripts/prepare_translations.py --input data.json --output translated.json --backend apple`；非兼容平台使用 `--backend none`。
+- 生成：`python3 scripts/render_report.py --input translated.json --output report.html`。
+- **视觉 QA**：检查 1440px 首屏中 Instruction、Inspector、Scene 主体可见；检查长 Thinking 双语、文件关系；检查 390px / 320px 横向溢出。点击每个事件应立刻更新 Inspector 和 Scene 焦点。运行测试 `python3 tests/check_browser.py`（有 Playwright 时）。
 
-只输出用户要求的 HTML / Skill / 必要使用说明，少写总结性套话。
+### 参考文件
+
+- `references/design-guidelines.md`：字体、密度、布局和视觉 QA
+- `references/translation.md`：Apple Swift、其他平台降级、缓存与翻译保护
+- `references/scene-semantics.md`：边与证据等级
+- `assets/report-template.html`、`assets/example.html`：可运行的设计参考（示例为**虚构数据**）
+- `scripts/import_v13_html.py`：可选的旧版 AgentCanary HTML 数据迁移器；**不会自动生成可靠 Thinking 摘要**
+
+示例是视觉参考，不是固定模块清单。源材料缺什么就省略或标未知；不要补造。

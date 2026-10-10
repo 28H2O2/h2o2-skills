@@ -5,6 +5,7 @@ import json
 from pathlib import Path
 import copy
 import re
+from quality_check import check
 
 HERE = Path(__file__).resolve().parent.parent
 
@@ -24,6 +25,11 @@ def build(input_path, output_path, redact=True):
     data = json.loads(Path(input_path).read_text(encoding="utf-8"))
     if not isinstance(data.get("cases"), list):
         raise ValueError("Expected top-level cases[]")
+    errs,warns=check(data)
+    if errs:
+        raise ValueError('Report failed semantic QA: '+ '; '.join(errs[:5]))
+    if warns:
+        print(f'NOTICE: {len(warns)} semantic/editorial warnings; run scripts/quality_check.py --input ... to inspect them.')
     if redact:
         data = redact_sensitive(data)
     template = (HERE / "assets" / "report-template.html").read_text(encoding="utf-8")

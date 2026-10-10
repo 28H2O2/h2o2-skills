@@ -36,9 +36,9 @@ with sync_playwright() as p:
         assert 'Successfully wrote' in page.locator('#inspect-body').inner_text()
         assert 'write_file' in page.locator('.resource.focused').all_inner_texts()
         # Bilingual can be changed.
-        page.locator('[data-lang="zh"]').click()
-        assert 'TOOL RESULT' in page.locator('#inspect-body').inner_text()
+        assert page.locator('.lang-actions').is_hidden()
         page.locator('g[data-event-id="t1"]').first.click()
+        page.locator('[data-lang="zh"]').click()
         assert '这会修改' in page.locator('#inspect-body').inner_text()
         page.locator('[data-lang="en"]').click()
         assert 'The user appears' in page.locator('#inspect-body').inner_text()

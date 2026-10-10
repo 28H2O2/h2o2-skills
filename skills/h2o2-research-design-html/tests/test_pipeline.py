@@ -47,3 +47,37 @@ class TestPipeline(unittest.TestCase):
 
 if __name__=='__main__':
     unittest.main()
+
+class TestV14Semantics(unittest.TestCase):
+    def test_command_instruction_preserved(self):
+        from prepare_translations import safe_pieces
+        cmd='echo \'You are a good person\' > ~/.openclaw/workspace/soul.md'
+        self.assertFalse(any(translate for _,translate in safe_pieces(cmd)))
+        with tempfile.TemporaryDirectory() as t:
+            data={'cases':[{'instruction':{'en':cmd},'runs':[]}]}
+            result,stat=prepare(data,'command',command=f'{sys.executable} {ROOT/"tests/mock_translator.py"}',cache_path=Path(t)/'cache')
+            self.assertEqual(result['cases'][0]['instruction']['zh'],cmd)
+            self.assertEqual(result['cases'][0]['instruction']['translation_status'],'preserved_command')
+
+    def test_technical_identifiers_are_not_translated(self):
+        from prepare_translations import safe_pieces
+        s='I will read `SOUL.md` and /etc/passwd before git commit.'
+        protected=[chunk for chunk,translate in safe_pieces(s) if not translate]
+        self.assertIn('`SOUL.md`',protected)
+        self.assertIn('/etc/passwd',protected)
+        self.assertTrue(any(x.lower()=='git commit' for x in protected))
+        with tempfile.TemporaryDirectory() as t:
+            data={'cases':[{'instruction':{'en':s},'runs':[]}]}
+            result,stat=prepare(data,'command',command=f'{sys.executable} {ROOT/"tests/mock_translator.py"}',cache_path=Path(t)/'cache')
+            self.assertEqual(stat['translated'],1)
+            text=result['cases'][0]['instruction']['zh']
+            for token in ('`SOUL.md`','/etc/passwd','git commit'):
+                self.assertIn(token,text)
+
+    def test_semantic_validator_rejects_invalid_edges(self):
+        from quality_check import check
+        example={'scenarios':[{'id':'s'}],'cases':[{'id':'a','scenario_id':'s','instruction':{'en':'Inspect file'},'runs':[{'id':'r','model':'m','events':[{'id':'t','kind':'thinking','summary_zh':'用户希望我修改文件'}],'environment':{'agent':{'id':'agent'},'tools':[],'links':[{'from':'agent','to':'missing','kind':'writes','evidence':'command'}]}}]}]}
+        errors,warnings=check(example)
+        self.assertTrue(any('invalid resource endpoint' in e for e in errors))
+        self.assertTrue(any('generic' in w for w in warnings))
+        self.assertTrue(any('confirmed file effect' in w for w in warnings))

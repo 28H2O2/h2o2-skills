@@ -65,7 +65,7 @@ bash install.sh --force  # 覆盖已有版本
 
 skill 会生成可离线打开的单文件 HTML：以紧凑执行泳道和事件列表呈现运行轨迹，Scene Map 区分配置、可用、已用与未知状态；点击事件可查看原文、忠实中文翻译和工具调用证据。没有 Agent Trace 时，按数据选择图表和证据卡。
 
-目录内附设计规范、[可交互示例](./skills/h2o2-research-design-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。当前 v1.3 新增统一 JSON 数据示例、HTML 生成器与 Apple 本地翻译脚本：Instruction 与 Thinking 在生成阶段补齐中文，报告打开时完全离线。已在 macOS 27.0.1 / Swift 6.4 上验证真实翻译，并检查桌面及 390px／320px 手机布局。
+目录内附设计规范、[可交互示例](./skills/h2o2-research-design-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。当前 v1.4 新增有证据支持的 Scene 关系卡、模型选择保留与切换提示、数据语义检查和旧版 HTML 数据导入；翻译流程保护代码、命令与技术标识，支持分批、局部重试和缓存。已验证 Apple 真实翻译及桌面／390px／320px 交互。
 
 ### h2o2-fdu-badminton-booker
 
@@ -163,11 +163,12 @@ h2o2-skills/
 │   └── marketplace.json                ← 让仓库成为 Claude Code plugin marketplace
 └── skills/                             ← 所有 skill 统一收在这里（下面按更新时间倒序）
     ├── h2o2-research-design-html/
-    │   ├── SKILL.md / README.md / LICENSE
+    │   ├── SKILL.md / README.md / LICENSE / CHANGELOG.md
     │   ├── references/
     │   │   ├── design-guidelines.md
     │   │   ├── typography.md
-    │   │   └── translation.md
+    │   │   ├── translation.md
+    │   │   └── scene-semantics.md
     │   ├── assets/
     │   │   ├── report-template.html / signature.html
     │   │   ├── example.html / example-compact.html
@@ -177,9 +178,10 @@ h2o2-skills/
     │   │   └── make_demo.py
     │   ├── scripts/
     │   │   ├── prepare_translations.py / render_report.py
+    │   │   ├── quality_check.py / import_v13_html.py
     │   │   └── apple-translate/      ← SwiftPM 本地翻译工具
     │   └── tests/
-    │       ├── test_pipeline.py / mock_translator.py
+    │       ├── test_pipeline.py / test_import.py / mock_translator.py
     │       └── check_browser.py
     ├── h2o2-fdu-badminton-booker/
     │   ├── SKILL.md
