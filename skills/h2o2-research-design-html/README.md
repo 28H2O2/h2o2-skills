@@ -1,3 +1,5 @@
+> **兼容入口保留。** 通用技术架构、源码审查、框架选型改用 [`h2o2-research-html`](../h2o2-research-html/)；新 Agent 执行日志报告改用 [`h2o2-agent-trajectory-html`](../h2o2-agent-trajectory-html/)。本目录的 V1.4 脚本、模板、示例和接口继续可用，原有全局链接无需删除。
+
 # H2O2 Research Design HTML · v1.4
 
 开源、跨平台、离线单文件的 Agent Trajectory / 研究报告 Skill。

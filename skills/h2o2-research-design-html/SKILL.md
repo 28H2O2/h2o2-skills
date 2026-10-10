@@ -1,10 +1,12 @@
 ---
 name: h2o2-research-design-html
 author: 28H2O2
-description: 生成简洁、可信、离线单文件 HTML 研究报告，尤其适合 Agent Trace、工具与文件操作、模型安全评测。使用 Trajectory、即时 Inspector、Scene Map 与可选本地中英翻译。禁止空泛文案和无证据的组件关系。
+description: 原 H2O2 V1.4 Agent HTML 报告的兼容入口；继续支持已有执行日志、工具与文件证据、Inspector、Scene Map 和本地翻译。新 Agent 报告优先使用 h2o2-agent-trajectory-html；通用技术研究使用 h2o2-research-html。
 ---
 
 # H2O2 Research Design HTML · v1.4
+
+> 本目录保留 V1.4 兼容接口。新 Agent 报告使用 `h2o2-agent-trajectory-html`，技术架构、源码审查和框架选型使用 `h2o2-research-html`；旧脚本仍可继续运行。
 
 **让用户直接看见事实，而不是读报告生成者的旁白。** HTML 是轻量研究记录，不是控制台，不是宣传页。标题用任务本名，如「AgentCanary复现」。保留低调 `crafted by h2o2` 落款。
 
