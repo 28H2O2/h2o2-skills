@@ -1,52 +1,46 @@
-# H2O2 v1.4 · Information Design
+# 场景优先的信息设计
 
-## Desktop (primary)
+从实际报告的阅读反馈出发：读者先需要知道用户目标、运行环境和关键对象，才有能力理解步骤与原始证据。概览是否必要、分几个页面由材料决定，不照搬某份报告的四个页签或双案例布局。
 
+## 1440×900 电脑端
+
+可从这个关系开始排版，再按内容调整：
+
+```text
+实验／任务名 · 当前运行的结果与必要状态
+任务／模型／轮次选择（按材料需要）
+┌─────────────────────────┬─────────────────────────┐
+│ 中文 Instruction        │ Scene：运行空间与关键对象│
+│ 原文可展开对照          │ 工具／技能／文件及关系    │
+├─────────────────────────┼─────────────────────────┤
+│ 执行过程                │ 当前步骤证据              │
+│ 事件列表／可选泳道      │ 中文先读，原文按需展开    │
+└─────────────────────────┴─────────────────────────┘
 ```
-Title: AgentCanary复现                brief verified totals
-Scenario / Case (status in options) / Model / Run (only if >1)
-User Instruction: full English + Chinese (directly visible)
-┌──────────────────────────┬────────────────────────┐
-│ TRAJECTORY (56%)         │ EVENT INSPECTOR (44%)  │
-│ compact User/Agent/Tool  │ chosen event evidence  │
-│ step swimlane            │ original / translation │
-│ concise event list       │ in-panel scrolling     │
-│                          ├────────────────────────┤
-│                          │ SCENE MAP              │
-│                          │ inventory + observed relations│
-└──────────────────────────┴────────────────────────┘
-```
 
-- Case selection should preview **task title, result, and one concrete reason to inspect**, without turning dropdown into an entire dashboard. Use a native select for small counts; custom picker only if value is clear.
-- Model selection updates visible result; no inaccurate cross-run summary in the Case dropdown.
-- Show raw User Instruction above Trajectory, not a model-made evaluation paraphrase. Source language may be followed by a complete faithful Chinese translation. Never rename a summary to "全文译文".
-- Timeline SVG conveys sequence; only label duration if timestamps exist. Click nodes to select corresponding event. Tool Call+Result one inspectable row. No mandatory key events.
-- Event list: one line `verb → target`, optional second line `actual observed result`; Thinking: an objective decision in <= 1 sentence. Important events may have amber left hairline / evidence clip icon.
-- Inspector directly adjacent to selected trace, not at the end of a long page. Fixed/scrollable independent panel when room allows. Expand original Thinking and faithful paragraph-by-paragraph translation. Control language view (`双语` / `原文` / `中文`), use clear `未翻译` state.
-- Scene Map separates capability inventory from observed relations. Use prominent **工具 / 技能 / 文件** headings. Draw `Tool → file` only from recorded `links[]` with evidence; never fake relationships with decorative branches. Keep all known available-but-unused components visible while focusing related edges. Fit Inspector (~250px scrollable evidence) and the Scene Map heading/main groups into the initial 1440×900 desktop viewport where content allows.
-- Timestamp, file hashes, full JSON paths belong behind a small `运行元数据` disclosure, not the primary UI.
-- In mobile layouts, use stacked Inspector below trajectory (scroll into view on event selection), horizontal-locally-scrollable SVG, readable full-size text.
+这是阅读关系的起点，不要求四个等高卡片。优先保证任务与关键场景同屏，Inspector 邻近执行过程；长任务、复杂场景可以让正文向下延伸。
 
-## Visual language
+- **场景优先分配空间。** 关键工具、技能、文件和必要关系默认可见。不要为了对齐短 Instruction，把 Scene 限定成只露出两行资源的小滚动框。缩小到 11–12px 也不能解决场景不清的问题。
+- 用途名优先，真实工具名／路径辅助；工具、技能、文件标题和内容对齐。少量对象用分组与留白，多对象先保留关键项，完整未使用清单折叠可访问。
+- 明确宿主／容器／工作区边界，正常任务、投毒载体和后果分别标注。空间图说明归属，步骤说明发生顺序；不画装饰箭头，也不要求同时画两张图。
+- 若需概览，用用户目标、参与对象与观察到的后果讲清场景。每个结果旁边给运行阶段与必要限制，不把历史 Claude Code 结果当作当前 OpenClaw 实测。
+- 数字的说明紧邻数字。分清输入参数、返回数据、采用后的答案、运行次数与评分，说明单位和统计范围；来源细节可展开。
+- 中文任务直接可读；完整英文可展开。长 Thinking 的中文与原文分别访问，不用等宽双语列制造大空白。命令保持原样，另附中文解释。
+- 点击步骤即时更新 Inspector 和 Scene 焦点。相关资源在折叠清单里时显露它，其他资源仍可访问。原始 JSON、全文工具返回、哈希与批次时间放次级证据层。
+- 默认 Inspector 避免仅重复旁边的任务；有依据时可先展示影响结果的实际步骤，并明确选中位置。没有关键步骤依据时按执行顺序展示，不编转折。
 
-- Page background warm off-white (#F7F6F2); ink #222623; muted #70766F; accent blue #4779AA, violet #9069AF, green #2F896D, amber #AD7940.
-- 15–16px default Chinese, 13–14px compact event summary, 14–15px event headers, 16–18px Scene group headings. Technical text monospace only where appropriate.
-- Typography system stack first, Georgia/Palatino italic for small editorial touches; avoid decorative/AI-generated subtitles. `crafted by h2o2` as optional low-contrast signature footer.
-- Fewer boxes; intentional whitespace, thin rules; do not multiply explanatory captions.
-- Meaningful interactions 1) case/model/run switch, 2) event select, 3) evidence view toggle, 4) Scene focus highlight.
+## 配色与密度
 
-## Content checklist
+用颜色帮助区分 Agent、正常资源、投毒位置、破坏风险和评估者，规则见 `visual-tokens.md`。状态还要有文字，红色不能独自证明操作成功。不要把每段解释都变成卡片；留白、细线和简短标题通常足够。
 
-- Each visible sentence says a fact, action, necessary caveat, or concrete model judgment, not design intent.
-- Scores do not automatically imply outcome. Failures/no Judge scores can be `未知` or `未完成`.
-- Source trace and translated text remain separately accessible; redaction cannot alter benign paths/identifiers or turn a normal shell `find` into file modification.
-- Think of "readable in 20 seconds", not "a long introduction".
+优先保证关键中文、对象名称和关系可读。必要限制仍在主层可见，其余引用、清单、代码与判分原文按需展开。删掉没有新事实、行动或证据的导语、结语和重复解释。
 
-## Visual QA (v1.4 additions)
+## 截图与交互验收
 
-- Remove generic hero slogans; the report title should be the actual experiment name.
-- If clicking a Trace step only changes a panel below the fold, that is a failure.
-- Inspect Scene in a selected Tool event **and** in a plain Thinking event; connection rows stay visible, focus changes only.
-- Do not mark every file reference in the swimlane with an identical green state node. Mark only observed file operations.
-- Limit Inspector height and enable its own scrolling rather than pushing the Scene Map off-screen.
-- Translate commands as non-executable descriptive text only in an additional field; never edit the original command.
+1. 看 1440×900 首屏：能否说出用户目标、Agent 在哪里、关键工具／技能／文件是什么、当前发生了什么？Instruction 旁边的场景是否需要滚动才能认识核心对象？
+2. 检查工具、技能、文件组的对齐、长名字换行、字号及可见关系；不以“没有横向溢出”代替阅读验收。
+3. 从场景／结果入口进入轨迹，核对实际 Case、Model、Run、Event ID。入口声称的结果必须与打开轮次对应；不存在的 ID 要提示，不能静默换成另一轮。
+4. 点击工具事件和 Thinking，测试 Inspector、Scene 高亮、折叠证据与语言切换；命令提及文件不能冒充实际文件操作。切换任务／轮次后检查焦点与滚动位置。
+5. 电脑端通过后检查 390px，必要时补 320px。手机可纵向延长为任务 → 场景 → 过程 → 证据，代码和长泳道仅局部横滚，不缩成小字缩略图。
+
+现有浏览器测试和截图来自 V1.4 兼容模板，主要证明功能仍工作；制作新报告仍需按本节实际查看其截图。

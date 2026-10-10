@@ -1,14 +1,19 @@
-# H2O2 Agent Trajectory HTML · V1.4 兼容迁移
+# H2O2 Agent Trajectory HTML · 场景优先
 
 开源、跨平台、离线单文件的 Agent 执行轨迹 Skill。技术架构、源码审查和框架选型阅读页使用独立的 `h2o2-research-html`。
 
-- 任务名作标题，不写“从判分回到执行证据”式宣传语
+- 先说明正常任务、运行空间、关键对象和实际后果，再查看轨迹证据
 - Case 选择显示攻击结果；同 Case 的 Model/Run 状态尽量保持
-- Instruction 英中并排，左侧 Trajectory + 右侧即时 Inspector
-- Scene Map 分清**资源有哪些**和**哪些关系有证据**
+- 中文 Instruction 优先、字号更大；电脑端任务与 Scene 同屏，过程与即时 Inspector 邻近
+- Scene 分清资源与有证据的关系；关键工具／技能／文件直接可见，完整次要清单可展开
+- 语义配色区分正常资源、投毒位置与风险，状态有文字依据；先验收电脑排版，再适配手机
 - Thinking 一条具体中文判断摘要 + 完整英文与可选中文；Tool Call/Result 合并
 - Apple Translation 可选；Linux/Windows 可在不安装任何依赖的情况下生成报告
 - 文件底部留一个轻量 `crafted by h2o2` 签名
+
+## 文档规范与兼容模板
+
+2026-10-10 的场景优先更新仅修改 Skill 文档。现有 HTML、Python/Swift 脚本、JSON 和测试继续保留 V1.4；直接运行渲染器仍输出兼容布局，并未自动实现新的排版规范。制作新报告时复用其数据嵌入、翻译与事件逻辑，按 `SKILL.md` 和 `references/design-guidelines.md` 调整输出布局并验收。
 
 ## 从 V1.4 迁移
 
@@ -22,7 +27,7 @@
 
 `assets/example.html` 是**虚构数据示例**；可以直接用浏览器打开。不需 `npm install`。
 
-## 最短运行路径
+## 最短运行路径（V1.4 兼容报告）
 
 ```bash
 cd h2o2-agent-trajectory-html

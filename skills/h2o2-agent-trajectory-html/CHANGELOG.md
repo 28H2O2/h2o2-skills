@@ -1,5 +1,12 @@
 # Changelog
 
+## 场景优先文档更新 — 2026-10-10
+
+- 中文任务和关键 Scene 同屏，先说明运行空间、参与对象与实际后果，再查看过程和证据。
+- 调整电脑端空间优先级、关键对象字号、语义配色及次要清单折叠要求。
+- 增加概览入口与实际 Case/Model/Run/Event ID 的一致性检查。
+- 本次仅更新文档；HTML、渲染器、翻译、输入结构与测试保留 V1.4。
+
 ## v1.4 — 2026-10-10
 
 - Removed decorative/fictitious Scene branches and introduced explicit `resource → relation → resource` cards backed by `environment.links[]`, retaining all known edges and highlighting current event.
