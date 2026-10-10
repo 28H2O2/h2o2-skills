@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light">
+<title>save_result 源码审查</title>
+<style>
+:root{--paper:#f7f6f2;--ink:#252b29;--muted:#626a63;--line:#d9ddd5;--blue:#3c688d}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}main{max-width:820px;margin:auto;padding:48px 28px}.subject{font-size:19px;font-weight:650;margin:0 0 18px}h1{font-size:36px;line-height:1.35;letter-spacing:-.03em;margin:0 0 16px}p{margin:14px 0}.status{font-size:14px;color:var(--muted)}.finding{margin:30px 0 35px;max-width:60ch}details{border-top:1px solid var(--line)}summary{padding:14px 0;cursor:pointer;font-weight:600}summary:focus-visible{outline:2px solid var(--blue);outline-offset:4px}.evidence{padding:0 0 22px}pre{overflow-x:auto;font:14px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;padding:18px;background:#eeefe8;border-left:2px solid #8b9e8c}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}li{margin:8px 0}footer{font:italic 15px Georgia,serif;color:#727f72;border-top:1px solid var(--line);padding-top:22px;margin-top:10px}@media(max-width:600px){main{padding:30px 22px}h1{font-size:30px}pre{padding:13px;font-size:13px}}
+</style>
+</head>
+<body><main>
+<p class="subject">save_result 源码审查</p>
+<h1><code>isError=true</code> 时，不执行写入</h1>
+<p class="status">教学用片段 · 静态阅读，未执行测试</p>
+<p class="finding">错误分支在 <code>path.write_text</code> 之前返回。字段缺失和写入异常的处理仍需测试。</p>
+<details><summary>源码证据 · 5 行完整片段</summary><div class="evidence"><pre><code>def save_result(result, path):
+    if result["isError"]:
+        return False
+    path.write_text(result["text"], encoding="utf-8")
+    return True
+</code></pre><p>这段源码支持控制流判断，不是文件快照或运行成功证明。</p></div></details>
+<details><summary>建议测试的三个边界</summary><div class="evidence"><ul><li><code>isError=true</code>：检查写入函数未被调用。</li><li>缺少 <code>isError</code> 或 <code>text</code>：确认期望的错误策略；当前片段会触发缺键异常。</li><li>写入权限不足：确认异常是否应向上传播。</li></ul><p>上述测试为建议，尚未执行；不能据此认定片段满足生产需求。</p></div></details>
+<footer>crafted by h2o2</footer>
+</main></body></html>

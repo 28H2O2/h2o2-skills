@@ -1,0 +1,62 @@
+[
+  {
+    "example": "openclaw-brief",
+    "viewport": [
+      1440,
+      900
+    ],
+    "result": "PASS",
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "example": "source-review",
+    "viewport": [
+      1440,
+      900
+    ],
+    "result": "PASS",
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "example": "openclaw-brief",
+    "viewport": [
+      390,
+      844
+    ],
+    "result": "PASS",
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "example": "source-review",
+    "viewport": [
+      390,
+      844
+    ],
+    "result": "PASS",
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "example": "openclaw-brief",
+    "viewport": [
+      320,
+      740
+    ],
+    "result": "PASS",
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "example": "source-review",
+    "viewport": [
+      320,
+      740
+    ],
+    "result": "PASS",
+    "network_requests": 0,
+    "js_errors": 0
+  }
+]

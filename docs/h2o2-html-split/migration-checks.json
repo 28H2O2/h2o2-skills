@@ -1,0 +1,146 @@
+{
+  "v14_unchanged_resources": [
+    {
+      "path": ".gitignore",
+      "sha256": "6097e9884b415d22c19364fa36c9d505822cc2f28f2e0a2ae5048babc5e52615"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "sha256": "33604c7cf73e704ae015df01b2a46f0cae13a5d5e250565b02432095b2271b5d"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "fba08d3c7e9294d66a7c842883edb9d217ce35d340a6d2a32aa731ad9ebc36e1"
+    },
+    {
+      "path": "assets/example-1440.png",
+      "sha256": "7b0c58ede5c9da1a9b5e07674271f496139d0438641f3f8f823c98aac2a66d75"
+    },
+    {
+      "path": "assets/example-320.png",
+      "sha256": "0e65ebc9b432cf062d7d523dd7543db7374d9abd5591ca50d5ddab2241f979bf"
+    },
+    {
+      "path": "assets/example-390.png",
+      "sha256": "667c24acde1f6be59fe5e80d58d79b770e338c80ea8845658f290fc74a906633"
+    },
+    {
+      "path": "assets/example-compact.html",
+      "sha256": "fa0407a7c4e788a91f88456bcd4d830b2689076344c24226fed57c60dfcd7463"
+    },
+    {
+      "path": "assets/example-thinking-1440.png",
+      "sha256": "222bd389a046289a5b482407d4009afd14dfd5f0ca155d475873835715bc285f"
+    },
+    {
+      "path": "assets/example-thinking-320.png",
+      "sha256": "b907a220f6cefb0531afbed6bb5500bb3822989b429d65fce9ea8a4b7d65c58c"
+    },
+    {
+      "path": "assets/example-thinking-390.png",
+      "sha256": "c119d02cfb0d124b14c1c551099b45363befee3437b10671c96b718942cc04f5"
+    },
+    {
+      "path": "assets/example.html",
+      "sha256": "4431a053a03a35041189db2fcea48f906c90b38fdba87fc73eb09782dec7c90a"
+    },
+    {
+      "path": "assets/report-template.html",
+      "sha256": "29ee699586e3a0366808482ec1005b5e031220fa9ab0f98964361f52105765a6"
+    },
+    {
+      "path": "assets/signature.html",
+      "sha256": "e51646f54cebee03ded1f618db145f595b24bf6c818f84da428f2061e29f0be0"
+    },
+    {
+      "path": "examples/agentcanary-demo.json",
+      "sha256": "022ce71196f1fc8d3ae247c1ebf13b5bc14ab00f85f0eb85b580b06df72213b6"
+    },
+    {
+      "path": "examples/make_demo.py",
+      "sha256": "d95cf9d46e9457abd257fec83d7eed2314ae94adcf83838b4c39a367ebbeb7bc"
+    },
+    {
+      "path": "examples/translation-smoke.json",
+      "sha256": "c88a0fd0428ba3e9c9008a5da2cee041b9305593da6c0d0845db16435a0c0691"
+    },
+    {
+      "path": "references/design-guidelines.md",
+      "sha256": "13d5434fbcd7eb29979fc0ad96d085e8670438fe736013f66275f47a4702dc38"
+    },
+    {
+      "path": "references/scene-semantics.md",
+      "sha256": "e76a0e69b64e6c2edb395b1011481706993e884c8be39ec05a9a2863876159f1"
+    },
+    {
+      "path": "references/translation.md",
+      "sha256": "8a54e125d3740ac62183b77ef3ce15329e5ad66376a1ae73cfe24357176806cc"
+    },
+    {
+      "path": "references/typography.md",
+      "sha256": "16810bb29fab9a34255ade88736e95f105d85375f2aa6bacaa79317d3cdbf2cc"
+    },
+    {
+      "path": "scripts/apple-translate/Package.swift",
+      "sha256": "74c2b294521e74c556fdf243afc4fe1d7d80a8da92ee25e9ca9a18ff3140d525"
+    },
+    {
+      "path": "scripts/apple-translate/Sources/AppleTranslate/main.swift",
+      "sha256": "9588e33debc5407c7f820acfcdf096d8449713bd685b08ced9d735aaf0129849"
+    },
+    {
+      "path": "scripts/import_v13_html.py",
+      "sha256": "8d2dbd1455a4a0bbf772d901a7b76413c88b3f18303102ee37b5b35d170b67cd"
+    },
+    {
+      "path": "scripts/prepare_translations.py",
+      "sha256": "a56decb3e8a447c1f763c12bc2995fc4553753212ad7eb3fd43d3ee54a01393c"
+    },
+    {
+      "path": "scripts/quality_check.py",
+      "sha256": "ec30d0b91e1a8c839f857f571144c43ad7016c7c5dc6f0efb3c24ea28ff93850"
+    },
+    {
+      "path": "scripts/render_report.py",
+      "sha256": "e04c8f4413516cdfe8a63c5a520795dae439fb5b02f7c9ff69cbc6c984d613c0"
+    },
+    {
+      "path": "tests/check_browser.py",
+      "sha256": "81299081667e7ee4457fe8ed8bd1bb5608fa96a9f9b95ec24c0ee7be94122b2d"
+    },
+    {
+      "path": "tests/mock_translator.py",
+      "sha256": "6d1465ffa8aa1536dcd63e1379c132a03940980a931e15fec7d66c3daa9402b3"
+    },
+    {
+      "path": "tests/test_import.py",
+      "sha256": "4af46fb378fb47c9552848b873f74a656798262463bc5c16d49fdf8f9c4f1cd4"
+    },
+    {
+      "path": "tests/test_pipeline.py",
+      "sha256": "1222a9bc803fa0dd34bb174aa2df670c9cd52be577a57d0aac7ecf4ca95469de"
+    }
+  ],
+  "standalone": [
+    {
+      "skill": "h2o2-research-html",
+      "result": "PASS",
+      "isolated_copy": "/var/folders/r3/297cvxbx4fjfr8p7yn5h42g40000gn/T/h2o2-standalone-nkdz9lmy/h2o2-research-html",
+      "sibling_skills": "absent",
+      "author": "28H2O2",
+      "codex_validator": "PASS with repository author key excluded in temporary copy only"
+    },
+    {
+      "skill": "h2o2-agent-trajectory-html",
+      "result": "PASS",
+      "isolated_copy": "/var/folders/r3/297cvxbx4fjfr8p7yn5h42g40000gn/T/h2o2-standalone-ydoa0zhw/h2o2-agent-trajectory-html",
+      "sibling_skills": "absent",
+      "author": "28H2O2",
+      "codex_validator": "PASS with repository author key excluded in temporary copy only"
+    }
+  ],
+  "marketplace": {
+    "count": 13,
+    "result": "PASS"
+  }
+}

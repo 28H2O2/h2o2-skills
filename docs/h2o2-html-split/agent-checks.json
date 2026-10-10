@@ -1,0 +1,62 @@
+[
+  {
+    "viewport": [
+      1440,
+      900
+    ],
+    "result": "PASS",
+    "checks": [
+      "Apple translated HTML inspector",
+      "Model switch",
+      "Run switch on synthetic fixture",
+      "missing Model notice",
+      "Case preserves Model",
+      "Tool Call/Result inspector",
+      "Scene resources retained and focused",
+      "offline",
+      "no page overflow"
+    ],
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "viewport": [
+      390,
+      844
+    ],
+    "result": "PASS",
+    "checks": [
+      "Apple translated HTML inspector",
+      "Model switch",
+      "Run switch on synthetic fixture",
+      "missing Model notice",
+      "Case preserves Model",
+      "Tool Call/Result inspector",
+      "Scene resources retained and focused",
+      "offline",
+      "no page overflow"
+    ],
+    "network_requests": 0,
+    "js_errors": 0
+  },
+  {
+    "viewport": [
+      320,
+      740
+    ],
+    "result": "PASS",
+    "checks": [
+      "Apple translated HTML inspector",
+      "Model switch",
+      "Run switch on synthetic fixture",
+      "missing Model notice",
+      "Case preserves Model",
+      "Tool Call/Result inspector",
+      "Scene resources retained and focused",
+      "offline",
+      "no page overflow"
+    ],
+    "network_requests": 0,
+    "js_errors": 0
+  }
+]

@@ -41,7 +41,9 @@ bash install.sh --force  # 覆盖已有版本
 
 | Skill | 更新时间 | 用途 |
 |-------|---------|------|
-| [h2o2-research-design-html](./skills/h2o2-research-design-html/) | 2026-10-08 | 为 Agent 运行轨迹、MCP/Skill 实验与科研结果生成单文件交互式 HTML 报告：轨迹为主、场景能力为辅，证据可追溯，附离线示例与桌面／手机预览 |
+| [h2o2-research-html](./skills/h2o2-research-html/) | 2026-10-10 | 技术架构、源码审查、框架选型与机制解释的离线阅读页；突出结论，次要证据按需展开，不要求 Agent Schema |
+| [h2o2-agent-trajectory-html](./skills/h2o2-agent-trajectory-html/) | 2026-10-10 | 真实 Agent 执行日志的 Instruction、Trajectory、Inspector、Scene Map；保留 V1.4 的 JSON、脚本与可选本地翻译 |
+| [h2o2-research-design-html](./skills/h2o2-research-design-html/) | 2026-10-08 | 原 V1.4 Agent HTML 的兼容入口；旧目录和接口保留，新报告按材料选择上面两个独立 Skill |
 | [h2o2-fdu-badminton-booker](./skills/h2o2-fdu-badminton-booker/) | 2026-08-06 | 通过已登录的 Chrome/Edge 检查复旦羽毛球场余量；在 Codex Desktop 中可定时监控、受控自动预约并发送通知（需另装 web-access） |
 | [h2o2-mac-disk-scan](./skills/h2o2-mac-disk-scan/) | 2026-07-13 | 只读扫描 Mac 磁盘大文件/大目录，结合 mo (Mole) 的 dry-run 与 du/find/stat 按可清理程度分三档报告，绝不删除文件。macOS only |
 | [h2o2-paper-impact](./skills/h2o2-paper-impact/) | 2026-06-29 | 输入论文标题，自动通过 Semantic Scholar 查询被引数据、识别大厂/院士引用、提取引用原文，生成量化影响力报告 |
@@ -57,15 +59,23 @@ bash install.sh --force  # 覆盖已有版本
 
 ## Quick Start
 
-### h2o2-research-design-html
+### h2o2-research-html
 
-在有实验数据或评测日志的项目中（如 Agent 安全对抗、评测复现），告诉 Agent：
+在有技术材料、源码或方案比较的项目中，告诉 Agent：
 
-> 帮我把这一轮的实验数据和 runs 日志生成一份可交互的 HTML 实验报告
+> 帮我把这些材料整理成简洁的 HTML 研究页，先让我看到主要结论，细节按需展开。
 
-skill 会生成可离线打开的单文件 HTML：以紧凑执行泳道和事件列表呈现运行轨迹，Scene Map 区分配置、可用、已用与未知状态；点击事件可查看原文、忠实中文翻译和工具调用证据。没有 Agent Trace 时，按数据选择图表和证据卡。
+不需要准备 Scenario / Case / Run / Events JSON。先回答一个问题；必要时画一张准确的主图，没有复杂关系就不画。对比、源码、历史案例和来源可折叠。直接打开 [OpenClaw 示例](./skills/h2o2-research-html/assets/openclaw-brief.html) 或 [无图源码审查示例](./skills/h2o2-research-html/assets/source-review.html)，均为离线单文件。
 
-目录内附设计规范、[可交互示例](./skills/h2o2-research-design-html/assets/example.html)及桌面／手机截图，示例使用虚构数据。当前 v1.4 新增有证据支持的 Scene 关系卡、模型选择保留与切换提示、数据语义检查和旧版 HTML 数据导入；翻译流程保护代码、命令与技术标识，支持分批、局部重试和缓存。已验证 Apple 真实翻译及桌面／390px／320px 交互。
+### h2o2-agent-trajectory-html
+
+在有实际 Agent 执行日志的项目中，告诉 Agent：
+
+> 帮我把这一轮的 runs 日志生成可以逐事件查看证据的 HTML 报告。
+
+从 V1.4 迁移完整 Agent 功能：Instruction 原文/译文、Thinking、合并的 Tool Call/Result、轨迹、即时 Inspector、有证据的 Scene、Case/Model/Run 选择器。单独安装即可运行，JSON 与脚本参数不变。附 [虚构数据示例](./skills/h2o2-agent-trajectory-html/assets/example.html)、语义检查和可选 Apple 翻译。
+
+原 `h2o2-research-design-html` 的目录、脚本和已有全局链接继续可用。新建通用阅读页用 Research，真实执行日志浏览用 Trajectory；无需删除旧 Skill。详见 [拆分检查记录及前后截图](./docs/h2o2-html-split/REVIEW.md)。
 
 ### h2o2-fdu-badminton-booker
 
@@ -162,7 +172,13 @@ h2o2-skills/
 ├── .claude-plugin/
 │   └── marketplace.json                ← 让仓库成为 Claude Code plugin marketplace
 └── skills/                             ← 所有 skill 统一收在这里（下面按更新时间倒序）
-    ├── h2o2-research-design-html/
+    ├── h2o2-research-html/
+    │   ├── SKILL.md / README.md / LICENSE
+    │   ├── assets/openclaw-brief.html / source-review.html
+    │   ├── references/diagram-grammar.md / visual-tokens.md
+    │   └── tests/check_browser.py
+    ├── h2o2-agent-trajectory-html/      ← 独立包含下方 V1.4 的脚本、模板、示例与测试
+    ├── h2o2-research-design-html/       ← 原目录保留为兼容入口
     │   ├── SKILL.md / README.md / LICENSE / CHANGELOG.md
     │   ├── references/
     │   │   ├── design-guidelines.md

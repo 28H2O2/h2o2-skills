@@ -1,0 +1,52 @@
+[
+  {
+    "path": "/Users/h2o2/.agents/skills/h2o2-research-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-research-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.agents/skills/h2o2-agent-trajectory-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-agent-trajectory-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.codex/skills/h2o2-research-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-research-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.codex/skills/h2o2-agent-trajectory-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-agent-trajectory-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.claude/skills/h2o2-research-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-research-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.claude/skills/h2o2-agent-trajectory-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-agent-trajectory-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.cursor/skills/h2o2-research-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-research-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.cursor/skills/h2o2-agent-trajectory-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-agent-trajectory-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.gemini/skills/h2o2-research-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-research-html",
+    "result": "PASS"
+  },
+  {
+    "path": "/Users/h2o2/.gemini/skills/h2o2-agent-trajectory-html",
+    "target": "/Users/h2o2/Desktop/Project/h2o2-skills/skills/h2o2-agent-trajectory-html",
+    "result": "PASS"
+  }
+]

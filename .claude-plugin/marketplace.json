@@ -12,6 +12,7 @@
       "source": "./",
       "strict": false,
       "skills": [
+        "./skills/h2o2-agent-trajectory-html",
         "./skills/h2o2-ai-process-auditor",
         "./skills/h2o2-arxiv-paper",
         "./skills/h2o2-bilibili-subtitle-extractor",
@@ -22,6 +23,7 @@
         "./skills/h2o2-paper-submission-audit",
         "./skills/h2o2-repo-cleanup",
         "./skills/h2o2-research-design-html",
+        "./skills/h2o2-research-html",
         "./skills/h2o2-youtube-transcript-extractor"
       ]
     }
