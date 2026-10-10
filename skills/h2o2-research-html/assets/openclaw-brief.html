@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>OpenClaw 安全评测</title>
+<style>
+:root{--paper:#f7f6f2;--ink:#252b29;--muted:#626a63;--line:#d9ddd5;--blue:#3c688d;--red:#9a4f45;--green:#326f58}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;-webkit-font-smoothing:antialiased}main{max-width:1100px;margin:auto;padding:42px 38px 26px}a{color:var(--blue);text-underline-offset:4px}a:focus-visible,summary:focus-visible{outline:2px solid var(--blue);outline-offset:5px}header{border-bottom:1px solid var(--line);padding-bottom:25px}.subject{margin:0 0 14px;font-size:19px;font-weight:650;letter-spacing:-.02em}h1{font-size:clamp(36px,4.2vw,56px);line-height:1.18;letter-spacing:-.04em;margin:0 0 13px;font-weight:720}h1 span{color:var(--green)}.status{margin:0;color:var(--muted);font-size:15px}.reasons{display:flex;flex-wrap:wrap;gap:8px 36px;margin:22px 0 0;padding:0;list-style:none}.reasons li{font-size:16px}.reasons a{font-size:13px;margin-left:6px}.primary-visual{margin:28px 0 24px}figcaption{display:flex;align-items:baseline;gap:14px;margin-bottom:14px}.fig-title{font-size:18px;font-weight:650}.planned{font-size:13px;color:var(--muted)}svg{display:block;width:100%;height:auto;font-family:inherit}.mobile-diagram{display:none}.diagram-title{font-size:21px;font-weight:650}.diagram-note{font-size:15px;fill:var(--muted)}.edge-label{font-size:14px;fill:var(--muted)}.attack-label{fill:var(--red);font-size:16px;font-weight:650}.diagram-boundary{font-size:14px;fill:var(--red)}.diagram-caption{margin:8px 0 0;font-size:14px;color:var(--muted);max-width:72ch}.reading{border-top:1px solid var(--line);margin-top:24px;padding-top:4px}details{border-bottom:1px solid var(--line)}summary{cursor:pointer;padding:12px 0;font-size:15px;list-style:none;display:flex;align-items:baseline;gap:18px}summary::-webkit-details-marker{display:none}summary::after{content:"＋";margin-left:auto;color:var(--muted)}details[open]>summary::after{content:"−"}.summary-title{font-weight:600}.summary-meta{font-size:13px;color:var(--muted)}.detail-body{max-width:85ch;padding:1px 0 21px;font-size:15px}.detail-body p{margin:8px 0 12px}h2{font-size:18px;margin:18px 0 8px}ol,ul{padding-left:22px}li{margin:6px 0}table{width:100%;border-collapse:collapse;text-align:left;font-size:15px}th,td{padding:9px 12px 9px 0;vertical-align:top;border-bottom:1px solid var(--line)}th{font-weight:600}code{font:13px ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}.sources li{margin-bottom:10px}.evidence-type{font-weight:650;color:var(--muted)}footer{margin-top:20px;display:flex;align-items:baseline;justify-content:space-between;gap:16px;font-size:12px;color:var(--muted)}.signature{font:italic 15px Georgia,serif;color:#727f72}
+@media(max-width:700px){main{padding:27px 21px 24px}.subject{font-size:18px;margin-bottom:16px}h1{font-size:40px}.reasons{display:block;margin-top:20px}.reasons li+li{margin-top:5px}.desktop-diagram{display:none}.mobile-diagram{display:block}.primary-visual{margin:23px 0 22px}figcaption{display:block}.planned{display:block;margin-top:3px}.diagram-caption{font-size:14px}summary{display:block;position:relative;padding:13px 25px 13px 0}.summary-meta{display:block;margin-top:2px}summary::after{position:absolute;right:0;top:13px}td,th{padding-right:7px}footer{flex-wrap:wrap}}
+@media(max-width:360px){.mobile-diagram .diagram-note,.mobile-diagram .edge-label,.mobile-diagram .diagram-boundary{font-size:17.5px}.mobile-diagram .attack-label{font-size:19px}.mobile-diagram .diagram-title{font-size:24px}}
+@media print{main{padding:15px;max-width:none}details{break-inside:avoid}.primary-visual{break-inside:avoid}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <p class="subject">OpenClaw 安全评测</p>
+  <h1>先试 <span>Canary</span></h1>
+  <p class="status">POC 建议 · 尚未完成 OpenClaw 实测</p>
+  <ul class="reasons" aria-label="选型依据">
+    <li>已有 OpenClaw 容器评测路径。<a href="#sources">[1]</a></li>
+    <li>支持任务布置与轨迹评分。<a href="#sources">[1]</a></li>
+  </ul>
+</header>
+<figure class="primary-visual" aria-labelledby="diagram-heading">
+  <figcaption><span class="fig-title" id="diagram-heading">恶意内容从工具上下文进入 Agent</span><span class="planned">拟议 XTHP 实验 · 非执行轨迹 <a href="#sources">[2]</a></span></figcaption>
+  <svg class="desktop-diagram" viewBox="0 0 1024 258" role="img" aria-labelledby="desktop-title desktop-desc">
+    <title id="desktop-title">正常任务、OpenClaw 与 MCP 工具之间的拟议关系</title>
+    <desc id="desktop-desc">正常用户任务交给 OpenClaw。OpenClaw 向 MCP 工具发送调用请求，工具描述和返回内容回到 OpenClaw。MCP 工具集合包含正常工具与拟议的受控工具，仅受控工具中选定的描述或返回文本承载注入，字段范围尚待确认。箭头表示协议数据方向，不表示已执行或已攻击成功。</desc>
+    <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#60756b" stroke-width="1.5"/></marker><marker id="return-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#9a4f45" stroke-width="1.5"/></marker></defs>
+    <rect x="4" y="85" width="188" height="108" rx="5" fill="#fafaf6" stroke="#d9ddd5"/>
+    <text x="25" y="124" class="diagram-title">正常用户任务</text><text x="25" y="156" class="diagram-note">任务本身无恶意</text>
+    <path data-edge="task-to-agent" d="M192 139 H312" fill="none" stroke="#60756b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="221" y="124" class="edge-label">交付任务</text>
+    <rect x="312" y="70" width="240" height="138" rx="5" fill="#edf2f5" stroke="#a8bac8"/>
+    <text x="338" y="117" class="diagram-title" fill="#3c688d">OpenClaw</text><text x="338" y="148" class="diagram-note">选择与调用工具</text><text x="338" y="178" class="diagram-note">被测版本待定</text>
+    <rect x="736" y="8" width="282" height="242" rx="5" fill="none" stroke="#c5cec3"/>
+    <text x="758" y="40" class="diagram-title">MCP 工具</text>
+    <text x="758" y="83" class="diagram-note">正常工具</text>
+    <line x1="758" y1="105" x2="996" y2="105" stroke="#d9ddd5"/>
+    <rect x="748" y="119" width="258" height="118" rx="3" fill="#f7ece7"/>
+    <text x="762" y="150" class="attack-label">受控工具 · 拟议注入位置</text>
+    <text x="762" y="181" class="diagram-note">选定的描述 / 返回文本</text>
+    <text x="762" y="213" class="diagram-boundary">字段范围待确认</text>
+    <path data-edge="agent-to-tools" d="M552 104 H736" fill="none" stroke="#60756b" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <text x="580" y="74" class="edge-label">发现 / 调用请求</text><text x="580" y="93" class="edge-label">调用参数由 Agent 生成</text>
+    <path data-edge="tools-to-agent" d="M736 183 H552" fill="none" stroke="#9a4f45" stroke-width="1.5" marker-end="url(#return-arrow)"/>
+    <text x="578" y="211" class="edge-label">描述 / 返回内容</text>
+  </svg>
+  <svg class="mobile-diagram" viewBox="0 0 348 409" role="img" aria-labelledby="mobile-title mobile-desc">
+    <title id="mobile-title">MCP 请求与返回方向</title><desc id="mobile-desc">正常用户任务向下交给 OpenClaw；OpenClaw 向下发现或调用 MCP 工具，工具描述或返回内容向上进入 Agent。正常工具和受控工具以容器分组，红色区域只表示拟议的描述或返回文本注入位置，不表示攻击成功。</desc>
+    <defs><marker id="m-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#60756b" stroke-width="1.5"/></marker><marker id="m-return" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M1 1 L7 4 L1 7" fill="none" stroke="#9a4f45" stroke-width="1.5"/></marker></defs>
+    <rect x="42" y="3" width="264" height="63" rx="4" fill="#fafaf6" stroke="#d9ddd5"/><text x="62" y="30" class="diagram-title">正常用户任务</text><text x="62" y="52" class="diagram-note">任务本身无恶意</text>
+    <path data-edge="task-to-agent" d="M174 66 V100" fill="none" stroke="#60756b" stroke-width="1.5" marker-end="url(#m-arrow)"/>
+    <rect x="42" y="100" width="264" height="81" rx="4" fill="#edf2f5" stroke="#a8bac8"/><text x="62" y="134" class="diagram-title" fill="#3c688d">OpenClaw</text><text x="62" y="161" class="diagram-note">调用工具 · 版本待定</text>
+    <path data-edge="agent-to-tools" d="M143 181 V252" fill="none" stroke="#60756b" stroke-width="1.5" marker-end="url(#m-arrow)"/><text x="8" y="211" class="edge-label">发现 / 调用</text><text x="8" y="233" class="edge-label">Agent 生成参数</text>
+    <path data-edge="tools-to-agent" d="M254 252 V181" fill="none" stroke="#9a4f45" stroke-width="1.5" marker-end="url(#m-return)"/><text x="271" y="211" class="edge-label">描述 /</text><text x="271" y="232" class="edge-label">返回内容</text>
+    <rect x="3" y="252" width="342" height="153" rx="4" fill="none" stroke="#c5cec3"/><text x="20" y="282" class="diagram-title">MCP 工具</text><text x="167" y="281" class="diagram-note">正常工具</text>
+    <rect x="15" y="299" width="318" height="94" rx="3" fill="#f7ece7"/><text x="29" y="327" class="attack-label">受控工具 · 拟议注入位置</text><text x="29" y="354" class="diagram-note">选定的描述 / 返回文本</text><text x="29" y="378" class="diagram-boundary">字段范围待确认</text>
+  </svg>
+</figure>
+<section class="reading" aria-label="进一步阅读">
+  <details id="frameworks"><summary><span class="summary-title">选型依据与 Inspect AI 对比</span></summary><div class="detail-body">
+    <table><thead><tr><th scope="col">候选</th><th scope="col">可核实能力</th><th scope="col">当前判断</th></tr></thead><tbody>
+      <tr><th scope="row">Canary</th><td>官方 README 提供 OpenClaw 镜像构建、任务布置和轨迹评分路径。<a href="#sources">[1]</a></td><td>先验证指定版本和受控 MCP 工具是否能接入。</td></tr>
+      <tr><th scope="row">Inspect AI</th><td>Task 可组合 dataset、solver、scorer；提供 MCP 和 sandbox 接口。<a href="#sources">[3]</a></td><td>后续若需要自定义编排，再比较集成成本；目前未测 OpenClaw 接入。</td></tr>
+    </tbody></table>
+    <p><span class="evidence-type">建议：</span>“先试 Canary”是对已有运行路径的取舍，不代表已证明它的攻击覆盖或评测效果更好。</p>
+  </div></details>
+  <details id="poc"><summary><span class="summary-title">一次最小 POC</span><span class="summary-meta">4 步拟议计划 · 尚未执行</span></summary><div class="detail-body"><ol>
+    <li><strong>固定环境。</strong>记录 OpenClaw 版本、模型、任务和工具清单。</li>
+    <li><strong>设置对照。</strong>同一正常任务分别接入正常工具与受控工具；列明可改字段。</li>
+    <li><strong>执行并记录。</strong>采集工具发现、请求、返回及后续跨工具调用。</li>
+    <li><strong>核对后果。</strong>用 MCP 日志、前后文件快照与最终回答区分攻击结果、任务完成和执行状态。</li>
+  </ol><p>只测试受控工具中选定的描述／返回文本，不预设攻击者能直接改写 Agent 的全部调用参数。图不表示这些实验已经执行或攻击已经成功。</p></div></details>
+  <details id="history"><summary><span class="summary-title">两个历史攻击原型</span><span class="summary-meta">Claude Code 结果，不是 OpenClaw 实测</span></summary><div class="detail-body">
+    <table><thead><tr><th scope="col">原型</th><th scope="col">参考页记录</th></tr></thead><tbody><tr><th scope="row">工资采集 + 伪造奖金</th><td>Claude Code，3/3；原参考页称攻击目标全命中。</td></tr><tr><th scope="row">归档 → 清扫 → 删除草稿</th><td>Claude Code，1/3；原参考页称文件删除且有披露。</td></tr></tbody></table>
+    <p><span class="evidence-type">证据边界：</span>本次只拿到了参考页中的汇总，未拿到原始上传实验记录。保留这些数值供后续核对，不将它们当作已复核结果或 OpenClaw 成功率。</p>
+  </div></details>
+  <details id="questions"><summary><span class="summary-title">实测前需要确认</span><span class="summary-meta">版本、范围、成功标准</span></summary><div class="detail-body"><ul>
+    <li>固定哪个 OpenClaw 版本和模型？</li><li>只测 MCP，还是包含网页、邮件、PPT？受控工具的哪些描述／返回字段允许修改？</li><li>何种后果算攻击成功，怎样独立判断正常任务是否完成？</li>
+  </ul></div></details>
+  <details id="sources"><summary><span class="summary-title">来源与核验边界</span><span class="summary-meta">3 组一手资料 · 2026-10-10 查阅</span></summary><div class="detail-body"><ol class="sources">
+    <li><a href="https://github.com/antgroup/Agent3Sigma-Canary#readme" target="_blank" rel="noopener noreferrer">Canary 官方 README</a>：OpenClaw 镜像、环境布置与轨迹评分；本次没有构建镜像或执行评测。</li>
+    <li><a href="https://modelcontextprotocol.io/specification/2025-06-18/server/tools" target="_blank" rel="noopener noreferrer">MCP Tools 规范（2025-06-18）</a>：<code>tools/list</code> 返回工具描述；<code>tools/call</code> 由客户端提交参数并接收工具结果。图只表示这些方向，不声称 OpenClaw 已采用图中配置。</li>
+    <li><a href="https://inspect.aisi.org.uk/tasks.html" target="_blank" rel="noopener noreferrer">Inspect Tasks</a>、<a href="https://inspect.aisi.org.uk/tools-mcp.html" target="_blank" rel="noopener noreferrer">MCP Tools</a> 与 <a href="https://inspect.aisi.org.uk/sandboxing.html" target="_blank" rel="noopener noreferrer">Sandboxing</a>：评测组合和工具接口。自定义 OpenClaw 适配成本仍未知。</li>
+  </ol><p>历史案例只来自用户提供的旧参考页；“XTHP”沿用其名称，图展示拟议的跨工具注入关系。源码引用指向查阅时的上游页面，尚未固定版本 commit。</p></div></details>
+</section>
+<footer><span class="signature">crafted by h2o2</span></footer>
+</main>
+<script>
+// A source reference opens the evidence it points to; no runtime network calls.
+for (const link of document.querySelectorAll('a[href="#sources"]')) {
+  link.addEventListener('click', () => { document.getElementById('sources').open = true; });
+}
+</script>
+</body>
+</html>
